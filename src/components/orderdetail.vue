@@ -108,6 +108,10 @@
                     <em>{{info.logistics_name}}</em>
                 </p>
                 <p>
+                    <span>物流单号：</span>
+                    <em>{{info.mail_no}}</em>
+                </p>
+                <p>
                     <span>完成时间：</span>
                     <em
                         v-if="!!info.snapshoot_cnt.success_time"
