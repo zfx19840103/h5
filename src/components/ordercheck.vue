@@ -200,7 +200,7 @@
                         @change="paymethodFunc"
                     />
                 </label>
-                <label>
+                <!-- <label>
                     <span class="alipayicon"></span>支付宝
                     <input
                         type="radio"
@@ -209,7 +209,7 @@
                         value="1"
                         @change="paymethodFunc"
                     />
-                </label>
+                </label> -->
             </div>
             <div class="payTipsc"><i>*</i>9月16日-9月19日持续发货，预计19日全部发货完成</div>
             <div class="payTogotop"></div>
@@ -439,7 +439,7 @@ export default {
 
             if (this.onemore == 1) {
                 this.skuinfoparam.images =
-                    onemoreobj.snapshoot_cnt.sku_list[0].images[0];
+                    !!onemoreobj.snapshoot_cnt.sku_list[0].images ? onemoreobj.snapshoot_cnt.sku_list[0].images[0] : '';
                 this.skuinfoparam.itemName =
                     onemoreobj.snapshoot_cnt.sku_list[0].itemName;
                 this.skuinfoparam.freight =
@@ -460,7 +460,7 @@ export default {
                     onemoreobj.snapshoot_cnt.is_invoice;
                 this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes ? onemoreobj.snapshoot_cnt.orderdes : '';
                 this.ordercreate.pay_method =
-                    onemoreobj.snapshoot_cnt.pay_method;
+                    (onemoreobj.snapshoot_cnt.pay_method == 1 || onemoreobj.snapshoot_cnt.pay_method == 2) ? 2 : 2;
 
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
 
@@ -1515,13 +1515,13 @@ export default {
     overflow: hidden;
 }
 .payType {
-    height: 127px;
+    height: 80px;
     background: #ffffff;
     margin-top: 10px;
 }
 
 .payType label:nth-child(2) {
-    border-bottom: #f4f4f4 solid 1px;
+    /* border-bottom: #f4f4f4 solid 1px; */
     height: 46px;
 }
 .payType label img {
