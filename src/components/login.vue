@@ -191,7 +191,13 @@ export default {
 
                     pushCode(paramsdata)
                         .then(function(res) {
-                            that.timecodeFunc();
+                            if(res.code == 20000) {
+                                that.timecodeFunc();
+                            }else {
+                                that.alertBoxVisible = true;
+                                that.alertBoxContent = res.message;
+                                that.smartCaptcha.reset();
+                            }
                             that.captchaClass = false;
                             console.log(res);
                         })
@@ -210,7 +216,7 @@ export default {
         vcCodepostfont() {
             let that = this;
             // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-            let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((tsingglobal)|(bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
+            let reg = /^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@((tsingglobal)|(bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
 
             if (this.param.email !== "") {
                 if (!reg.test(this.param.email)) {
@@ -229,21 +235,16 @@ export default {
             }
         },
         timecodeFunc() {
-            let n = !!localStorage.getItem("moon_vcodetime")
-                    ? localStorage.getItem("moon_vcodetime")
-                    : 59,
+            let n = 59,
                 that = this;
-            // Cookie.setItem('moon_email', that.param.email);
             let timecode = () => {
                 if (n >= 0) {
                     that.vcCodepostfontcontent = n + "秒";
-                    localStorage.setItem("moon_vcodetime", n);
                     n -= 1;
                     setTimeout(function() {
                         timecode();
                     }, 1000);
                 } else {
-                    localStorage.removeItem("moon_vcodetime");
                     that.vcCodepostfontcontent = "发送验证";
                     that.smartCaptcha.reset();
                 }

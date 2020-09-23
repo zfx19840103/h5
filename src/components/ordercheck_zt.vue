@@ -115,10 +115,15 @@
             <!-- <div class="payTipsc"><i>*</i>9月16日-9月19日持续发货，预计19日全部发货完成</div> -->
             <div class="payTogotop"></div>
             <div class="payTogo">
-                <span>
+                <span v-if="allshowhide">
                     合计：
                     <em>¥{{priceallFunc(skuinfoparam.shop_price, ordercreate.sku_list[0].sku_count)}}</em>
                     共{{allnumFunc(ordercreate.sku_list[0].sku_count)}}件
+                </span>
+                <span v-else>
+                    合计：
+                    <em>¥0</em>
+                    共1件
                 </span>
                 <button @click="paysubmit" v-if="paysubmitdisabled" v-preventReClick>去支付</button>
                 <button v-else v-bind:class="{'paysubmitdisabled': !paysubmitdisabled}" disabled>去支付</button>
@@ -143,6 +148,7 @@ import {
 export default {
     data() {
         return {
+            allshowhide: true,
             stockshow: true,
             stockdisabled: false,
             paysubmitdisabled: true,
@@ -331,15 +337,18 @@ export default {
                     if(this.ordercreate.stock>0) { //判断库存数量大于0的时候去支付按钮正常显示,库存显示
                         this.stockdisabled = true;
                         this.paysubmitdisabled = true;
+                        this.allshowhide = true;
                         this.stockshow = true;
                     }else if(this.ordercreate.stock<0){ //库存数量初始的时候去支付按钮正常显示,库存不显示
                         this.stockdisabled = false;
                         this.paysubmitdisabled = true;
                         this.stockshow = true;
+                        this.allshowhide = true;
                     }else if(this.ordercreate.stock == 0) { //库存数量初始的时候去支付按钮置灰,库存显示
                         this.stockdisabled = true;
                         this.paysubmitdisabled = false;
                         this.stockshow = false;
+                        this.allshowhide = false;
                         this.ordercreate.sku_list[0].sku_count = 0;
                     }
                 }
@@ -349,8 +358,6 @@ export default {
         initonemoreFunc() {
             let that = this;
             let onemoreobj = JSON.parse(localStorage.getItem("onemoreobj_zt"));
-
-
 
             if (this.onemore == 1) {
                 this.skuinfoparam.images = !!onemoreobj.snapshoot_cnt
@@ -382,6 +389,7 @@ export default {
                         : 2;
 
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
+                this.ordercreate.area = onemoreobj.snapshoot_cnt.area;
 
             }
 
@@ -557,7 +565,7 @@ export default {
                     usage_scenario: "bytemoon_self" //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换 bytemoon_self 自提
                 };
 
-                ordercreateapi(data)
+                ordercreateapi_zt(data)
                     .then(function(res) {
                         if (!!res && res.code == 20000) {
                             //将商品code存在localstorge里
@@ -617,7 +625,9 @@ export default {
 };
 </script>
 
-<style scoped>
+
+<style>
+
 .payTogo button.paysubmitdisabled {
     background: #cccccc;
 }

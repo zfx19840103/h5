@@ -93,7 +93,14 @@ export default {
     },
     methods: {
         emailpayFunc() {
-            this.$router.push({'name': 'ordercheck'})
+            if (localStorage.getItem("moon_email")) {
+                localStorage.removeItem('onemoreobj_zt');
+                this.$router.push("/ordercheck");
+            } else {
+                this.loginShow = true;
+                this.nowPayShow = false;
+                this.routerurl = 'ordercheck';
+            }
         },
         gqtraisingFunc() {
             if (localStorage.getItem("moon_email")) {
@@ -134,7 +141,13 @@ export default {
 
                     pushCode(paramsdata)
                         .then(function(res) {
-                            that.timecodeFunc();
+                            if(res.code == 20000) {
+                                that.timecodeFunc();
+                            }else {
+                                that.alertBoxVisible = true;
+                                that.alertBoxContent = res.message;
+                                that.smartCaptcha.reset();
+                            }
                             that.captchaClass = false;
                             console.log(res);
                         })
@@ -153,7 +166,7 @@ export default {
         vcCodepostfont() {
             let that = this;
             // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-            let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((tsingglobal)|(bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
+            let reg = /^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@((tsingglobal)|(bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
             
             if (this.param.email !== "") {
                 if(!reg.test(this.param.email)) {
