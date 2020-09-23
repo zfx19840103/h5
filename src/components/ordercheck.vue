@@ -969,6 +969,7 @@ export default {
                             );
                             localStorage.setItem("order_isload", 1);
                             localStorage.setItem("orderloadingtime", 0);
+                            localStorage.setItem("detailType", 1);
                             // localStorage.removeItem('onemoreobj');
                             if (that.ordercreate.pay_method == 1) {
                                 //1是支付宝 2是微信
