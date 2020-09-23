@@ -4,7 +4,7 @@
     <div class="wrapper" v-else ref="wrapper" v-bind:style="{ height: windowHeight+'px'}">
       <div class="bscroll-container">
         <ul class="content">
-          <li v-for="(item, index) in myorderData.list1" :key="index">
+          <li v-for="(item, index) in myorderData.list" :key="index">
             <div @click="orderdetail(item)">
               <div class="zitiImg" v-if="item.usage_scenario == 'bytemoon_self'"></div>
               <div class="top">
@@ -351,7 +351,7 @@
 
       orderdetail(item) {
         let that = this;
-        if (item.usage_scenario == 'bytemoon_self ') { // 自提
+        if (item.usage_scenario == 'bytemoon_self') { // 自提
           localStorage.setItem("detailType", 2);
         }
         if (item.usage_scenario == 'bytemoon_pay') {
@@ -484,7 +484,7 @@
       },
       gotoPayFunc(item) {
         let that = this;
-        if (item.usage_scenario == 'bytemoon_self ') { // 自提
+        if (item.usage_scenario == 'bytemoon_self') { // 自提
           that.$router.push({
             name: "ordercheck_zt",
             query: {
@@ -511,7 +511,7 @@
       },
       onemorePayFunc(item) {
         let that = this;
-        if (item.usage_scenario == 'bytemoon_self '){ // 自提
+        if (item.usage_scenario == 'bytemoon_self'){ // 自提
           that.$router.push({
             name: "ordercheck_zt",
             query: {
@@ -521,7 +521,7 @@
           localStorage.setItem("onemoreobj_zt", JSON.stringify(item));
           localStorage.removeItem("numordersmethodobj_zt");
         }
-        if (item.bytemoon_pay_type == 'bytemoon_pay') {
+        if (item.usage_scenario == 'bytemoon_pay') {
           that.$router.push({
             name: "ordercheck",
             query: {

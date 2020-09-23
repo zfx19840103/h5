@@ -138,9 +138,9 @@
         <div class="areaDetail">
           <div>
             <span>取件人邮箱:</span>
-            <span class="emailS">@bytedance.com</span>
+            <span class="emailS">{{info.snapshoot_cnt.receive_info.email}}</span>
           </div>
-          <div><span>头条海淀xx楼工区</span><span>{{info.snapshoot_cnt.receive_info.province}}
+          <div><span>{{info.snapshoot_cnt.receive_info.province}}
               {{info.snapshoot_cnt.receive_info.city}} {{info.snapshoot_cnt.receive_info.area}}
               {{info.snapshoot_cnt.receive_info.detailAddress}}</span></div>
         </div>
@@ -468,7 +468,7 @@
           }
         });
         clearTimeout(that.timeFunc);
-        
+
         if (that.detailType == 1) {
           localStorage.removeItem('order_loading');
           localStorage.removeItem('numordersmethodobj');
@@ -480,8 +480,8 @@
           localStorage.removeItem('numordersmethodobj_zt');
           localStorage.setItem("onemoreobj_zt", JSON.stringify(that.info));
         }
-        
-        
+
+
       },
       gotoPayFunc() {
         let that = this;
