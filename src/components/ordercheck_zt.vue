@@ -137,6 +137,7 @@
 <script>
 import Cookie from "js-cookie";
 import AlertBox from "./alertbox";
+import merge from 'webpack-merge';
 import {
     getaddresslistdata,
     skuinfo_zt,
@@ -297,11 +298,17 @@ export default {
     },
     methods: {
         emailztfeinput() {
+            this.$router.push({
+                query:merge(this.$route.query,{orderedit:1})
+            })
             let l = JSON.parse(localStorage.getItem("numordersmethodobj_zt"));
             l.emailztfe = this.ordercreate.emailztfe;
             localStorage.setItem('numordersmethodobj_zt', JSON.stringify(l));
         },
         emailztchange() {
+            this.$router.push({
+                query:merge(this.$route.query,{orderedit:1})
+            })
             let l = JSON.parse(localStorage.getItem("numordersmethodobj_zt"));
             l.emailzt = this.ordercreate.emailzt;
             localStorage.setItem('numordersmethodobj_zt', JSON.stringify(l));
@@ -309,7 +316,9 @@ export default {
         workarealink() {
             this.$router.push({
                 name: "workarea",
-                query: {},
+                query: {
+                    onemore: this.$route.query.onemore
+                },
             })
         },
         emailztselect(e) {
@@ -326,7 +335,7 @@ export default {
             let _onemore = JSON.parse(localStorage.getItem('onemoreobj_zt'));
 
             if (!!_l_nom) {
-                if (!_onemore) {
+                if (!_onemore || this.$route.query.orderedit == 1) {
                     this.ordercreate.sku_list[0].sku_count = _l_nom.sku_count;
                     this.ordercreate.orderdes = _l_nom.orderdes;
                     this.ordercreate.pay_method = _l_nom.pay_method;
@@ -361,8 +370,9 @@ export default {
         initonemoreFunc() {
             let that = this;
             let onemoreobj = JSON.parse(localStorage.getItem("onemoreobj_zt"));
+            let orderedit = this.$route.query.orderedit;
 
-            if (this.onemore == 1) {
+            if (this.onemore == 1 && orderedit != 1) {
                 this.skuinfoparam.images = !!onemoreobj.snapshoot_cnt
                     .sku_list[0].images
                     ? onemoreobj.snapshoot_cnt.sku_list[0].images[0]
@@ -392,7 +402,19 @@ export default {
                         : 2;
 
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
-                this.ordercreate.area = onemoreobj.snapshoot_cnt.area;
+                this.ordercreate.warehouseCode = onemoreobj.snapshoot_cnt.warehouseCode;
+                this.ordercreate.area = onemoreobj.snapshoot_cnt.receive_info.detailAddress;
+                this.ordercreate.emailztfe = onemoreobj.snapshoot_cnt.receive_info.email.substring(0, onemoreobj.snapshoot_cnt.receive_info.email.indexOf('@'));
+                this.ordercreate.emailzt = onemoreobj.snapshoot_cnt.receive_info.email.substring(onemoreobj.snapshoot_cnt.receive_info.email.indexOf('@')+1, onemoreobj.snapshoot_cnt.receive_info.email.length);
+
+
+                this.numordersmethodobj.area = onemoreobj.snapshoot_cnt.receive_info.detailAddress;
+                this.numordersmethodobj.sku_count = onemoreobj.snapshoot_cnt.sku_list[0].sku_count;
+                this.numordersmethodobj.emailztfe = onemoreobj.snapshoot_cnt.receive_info.email.substring(0, onemoreobj.snapshoot_cnt.receive_info.email.indexOf('@'));
+                this.numordersmethodobj.emailzt = onemoreobj.snapshoot_cnt.receive_info.email.substring(onemoreobj.snapshoot_cnt.receive_info.email.indexOf('@')+1, onemoreobj.snapshoot_cnt.receive_info.email.length);
+                
+                localStorage.setItem('numordersmethodobj_zt', JSON.stringify(this.numordersmethodobj));
+
 
             }
 
@@ -458,6 +480,7 @@ export default {
                 });
         },
         paynumblur() {
+            
             if (this.ordercreate.sku_list[0].sku_count == "") {
                 this.ordercreate.sku_list[0].sku_count = 1;
             }
@@ -516,6 +539,9 @@ export default {
                 "numordersmethodobj_zt",
                 JSON.stringify(this.numordersmethodobj)
             );
+            this.$router.push({
+                query:merge(this.$route.query,{orderedit:1})
+            })
         },
 
         //创建订单
@@ -640,7 +666,7 @@ input.emailztfe::-webkit-input-placeholder{
 }
 .emailztfe {
     float: left;
-    margin: 12px 0 0 0;
+    margin: 15px 0 0 0;
     font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
