@@ -134,9 +134,9 @@ import Cookie from "js-cookie";
 import AlertBox from "./alertbox";
 import {
     getaddresslistdata,
-    skuinfo,
+    skuinfo_zt,
     deleteaddress,
-    ordercreateapi,
+    ordercreateapi_zt,
     orderpollingpay
 } from "@/api/ordercheck";
 
@@ -405,7 +405,7 @@ export default {
         //获取月饼商品详情
         skuinfoFunc() {
             let that = this;
-            skuinfo()
+            skuinfo_zt()
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         let _info = res.data.info;
@@ -434,7 +434,7 @@ export default {
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
-                        localStorage.removeItem("moon_email_zt");
+                        localStorage.removeItem("moon_email");
                     } else {
                         that.alertBox = {
                             tip: res.message,
@@ -584,7 +584,7 @@ export default {
                             setTimeout(function() {
                                 that.$router.push("/login");
                             }, 1000);
-                            localStorage.removeItem("moon_email_zt");
+                            localStorage.removeItem("moon_email");
                         } else {
                             that.alertBox = {
                                 tip: res.message,
@@ -648,11 +648,11 @@ input.emailztfe::-webkit-input-placeholder{
 .emailztselectdiv {
     float: right;
     margin: 12px 0 0;
-    width: 115px;
+    width: 150px;
     overflow: hidden;
 }
 .emailztselect {
-    width: 140px;
+    width: 180px;
     border: 0;
 }
 .topcontent {
