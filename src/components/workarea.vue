@@ -87,7 +87,23 @@
           loca.id = item.id
           loca.warehouseCode = item.warehouseCode
           localStorage.setItem('numordersmethodobj_zt', JSON.stringify(loca))
-          this.$router.push('/ordercheck_zt')
+          if (this.$route.query.onemore == 1) {
+              this.$router.push({
+                name: "ordercheck_zt",
+                query: {
+                  orderedit: 1,
+                  onemore: 1
+                }
+              });
+          } else {
+            this.$router.push({
+              name: "ordercheck_zt",
+              query: {
+                orderedit: 1
+              }
+            })
+          }
+
         }
       },
 
