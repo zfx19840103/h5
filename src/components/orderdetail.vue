@@ -140,9 +140,7 @@
             <span>取件人邮箱:</span>
             <span class="emailS">{{info.snapshoot_cnt.receive_info.email}}</span>
           </div>
-          <div><span>{{info.snapshoot_cnt.receive_info.province}}
-              {{info.snapshoot_cnt.receive_info.city}} {{info.snapshoot_cnt.receive_info.area}}
-              {{info.snapshoot_cnt.receive_info.detailAddress}}</span></div>
+          <div><span>{{info.snapshoot_cnt.receive_info.detailAddress}}</span></div>
         </div>
         <!-- <p style="font-size: 16px;">
               <span>取件人邮箱:@bytedance.com{{info.snapshoot_cnt.receive_info.name}}</span>
@@ -1073,7 +1071,7 @@
       font-size: 25px;
       display: inline-block;
       vertical-align: middle;
-      width: 47px;
+      width: 32px;
       text-align: center;
     }
 
@@ -1097,7 +1095,7 @@
     }
 
     .emailS {
-      width: 200px;
+      width: 220px;
       display: inline-block;
       word-break: break-all;
       vertical-align: top;
