@@ -240,6 +240,7 @@ export default {
 
                         localStorage.removeItem("moon_email");
                         localStorage.removeItem("onemoreobj");
+                        localStorage.removeItem("onemoreobj_zt");
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
@@ -379,6 +380,7 @@ export default {
 
                         localStorage.removeItem("moon_email");
                         localStorage.removeItem("onemoreobj");
+                        localStorage.removeItem("onemoreobj_zt");
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
@@ -404,9 +406,11 @@ export default {
                 }
             });
             localStorage.removeItem("numordersmethodobj");
+            localStorage.removeItem("numordersmethodobj_zt");
             localStorage.removeItem("addressobj");
             localStorage.removeItem("invoiceobj");
             localStorage.setItem("onemoreobj", JSON.stringify(item));
+            localStorage.setItem("onemoreobj_zt", JSON.stringify(item));
         },
         onemorePayFunc(item) {
             let that = this;
@@ -418,9 +422,11 @@ export default {
                 }
             });
             localStorage.removeItem("numordersmethodobj");
+            localStorage.removeItem("numordersmethodobj_zt");
             localStorage.removeItem("addressobj");
             localStorage.removeItem("invoiceobj");
             localStorage.setItem("onemoreobj", JSON.stringify(item));
+            localStorage.setItem("onemoreobj_zt", JSON.stringify(item));
         }
     }
 };

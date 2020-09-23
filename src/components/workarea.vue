@@ -6,10 +6,10 @@
         <i class="el-icon-search icondiv"></i>
         <input class="seartxt" @input="inputChange" v-model="searchInp" type="text" placeholder="搜索">
       </div>
-      <div class="cancel">取消</div>
+      <div class="cancel" @click="cancalFun">取消</div>
     </div>
     <div class="areaBox">
-      <div v-for="item in areaData" @click="areaselecr(item)" class="areaItem">
+      <div v-for="item in areaData" @click="areaselecr(item)" :class="item.stock == 0? 'noneStock' : 'areaItem'">
         <span>{{ item.area }}</span>
         <span>(库存{{ item.stock }})</span>
         <span class="checkItem" v-if="checkId == item.id"><i class="el-icon-check"></i></span>
@@ -57,7 +57,7 @@
               setTimeout(function() {
                 that.$router.push("/login");
               }, 1000);
-              localStorage.removeItem("moon_email_zt");
+              localStorage.removeItem("moon_email");
             } else {
               that.alertBox = {
                 tip: res.message,
@@ -70,15 +70,24 @@
           });
       },
 
+      // 点击取消
+      cancalFun() {
+        this.$router.push('/ordercheck_zt')
+      },
+
       // 选择工区
       areaselecr(item) {
-        this.checkId = item.id
-        var loca = JSON.parse(localStorage.getItem('numordersmethodobj_zt')) || {}
-        loca.area = item.area
-        loca.stock = item.stock
-        loca.id = item.id
-        localStorage.setItem('numordersmethodobj_zt', JSON.stringify(loca))
-        this.$router.push('/ordercheck')
+        if (item.stock == 0) {
+
+        } else {
+          this.checkId = item.id
+          var loca = JSON.parse(localStorage.getItem('numordersmethodobj_zt')) || {}
+          loca.area = item.area
+          loca.stock = item.stock
+          loca.id = item.id
+          localStorage.setItem('numordersmethodobj_zt', JSON.stringify(loca))
+          this.$router.push('/ordercheck_zt')
+        }
       },
 
       // 搜索框输入
@@ -170,6 +179,17 @@
     text-align: left;
     padding-left: 14px;
     color: #333333;
+    overflow: hidden;
+  }
+  .noneStock{
+    height: 50px;
+    line-height: 50px;
+    background: #F4F4F4;
+    border-top: 1px solid #F4F4F4;
+    font-size: 14px;
+    text-align: left;
+    padding-left: 14px;
+    color: #cccccc;
     overflow: hidden;
   }
   .checkItem{
