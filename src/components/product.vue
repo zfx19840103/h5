@@ -66,7 +66,7 @@ import BScroll from "better-scroll";
 export default {
     data() {
         return {
-            actstock: false,
+            actstock: true,
             smartCaptcha: "",
             alertBoxVisible: false,
             alertBoxContent: "",
@@ -96,7 +96,14 @@ export default {
             this.$router.push({'name': 'ordercheck'})
         },
         gqtraisingFunc() {
-            this.$router.push({'name': 'ordercheck_zt'})
+            if (localStorage.getItem("moon_email")) {
+                localStorage.removeItem('onemoreobj_zt');
+                this.$router.push("/ordercheck_zt");
+            } else {
+                this.loginShow = true;
+                this.nowPayShow = false;
+                this.routerurl = 'ordercheck_zt';
+            }
         },
         pushCodeFunc() {
             let that = this;
@@ -214,12 +221,7 @@ export default {
                                 _czc.push(["_trackEvent", "login", "loginh5"]);
                                 that.alertBoxContent = "登陆成功";
                                 setTimeout(function() {
-                                    if(that.routerurl == 'ordercheck') {
-                                        that.$router.push("/ordercheck");
-                                    }
-                                    if(that.routerurl == 'myorder') {
-                                        that.$router.push("/myorder");
-                                    }
+                                    that.$router.push({'name': that.routerurl});
                                 }, 1000);
                             } else {
                                 that.alertBoxContent = res.message;
@@ -233,18 +235,6 @@ export default {
         },
         linkproduct() {
             // this.$router.push('/product')
-        },
-        nowPayFunc() {
-            if (localStorage.getItem("moon_email")) {
-                localStorage.removeItem('onemoreobj');
-                localStorage.removeItem('onemoreobj_zt');
-                this.$router.push("/ordercheck");
-            } else {
-                this.loginShow = true;
-                this.nowPayShow = false;
-                this.routerurl = 'ordercheck';
-            }
-            _czc.push(["_trackEvent", "tobuy", "tobuyh5"]);
         },
         orderCenter() {
             if (!!localStorage.getItem("moon_email")) {

@@ -17,6 +17,34 @@ export function getaddresslistdata(data) {
     
 }
 
+export function ordercreateapi_zt(data) {
+    return new Promise((resolve, reject) => {
+        request
+            .post(`${API}/openapi/user/order/create/bytemoon_self`, qs.stringify(data))
+            .then(function(response) {
+                resolve(response);
+            })
+            .catch(function(error) {
+                reject(error);
+            });
+    });
+
+}
+
+export function skuinfo_zt() {
+    return new Promise((resolve, reject) => {
+        request
+            .get(`${API}/openapi/activity/byte/selfsku/info`)
+            .then(function(response) {
+                resolve(response);
+            })
+            .catch(function(error) {
+                reject(error);
+            });
+    });
+
+}
+
 export function skuinfo() {
     return new Promise((resolve, reject) => {
         request

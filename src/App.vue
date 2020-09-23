@@ -70,4 +70,9 @@ html, body {
 .alertBox .el-dialog__body {
     padding: 10px 0;
 }
+.emailztselect input {
+    color: #333333;
+    font-size: 16px;
+    border: 0;
+}
 </style>
