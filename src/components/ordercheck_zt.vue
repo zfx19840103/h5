@@ -249,6 +249,7 @@ export default {
                 area: '工区选择',
                 emailztfe: '',
                 emailzt: "bytedance.com",
+                warehouseCode: '',
                 stock:-1,
             },
             maxnum: 5,
@@ -268,6 +269,7 @@ export default {
                 emailztfe: "", //邮箱地址前缀
                 emailzt: "bytedance.com", //邮箱地址后缀
                 stock: -1,
+                warehouseCode: '',
             }
         };
     },
@@ -332,6 +334,7 @@ export default {
                     this.ordercreate.emailztfe = _l_nom.emailztfe;
                     this.ordercreate.emailzt = _l_nom.emailzt;
                     this.ordercreate.stock = _l_nom.stock;
+                    this.ordercreate.warehouseCode = _l_nom.warehouseCode;
 
 
                     if(this.ordercreate.stock>0) { //判断库存数量大于0的时候去支付按钮正常显示,库存显示
@@ -559,7 +562,7 @@ export default {
                     },
                     orderdes: that.ordercreate.orderdes,
                     itemCode: that.skuinfoparam.itemCode,
-                    warehouseCode: that.skuinfoparam.warehouseCode,
+                    warehouseCode: that.ordercreate.warehouseCode,
                     is_invoice: 0, //是否开发票	0否 1是
                     pathway: 2, //环境配置	1,2
                     usage_scenario: "bytemoon_self" //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换 bytemoon_self 自提
