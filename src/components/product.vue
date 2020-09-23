@@ -3,9 +3,13 @@
 
         <div class="loginBgtop"></div>
         <div class="loginBgbottom"></div>
-        <div class="nowPay" v-if="nowPayShow" @click="nowPayFunc">
-                <span>¥{{payNow}}立即购买</span>
-            </div>
+        <div class="productbtn" v-if="nowPayShow">
+            <button class="emailpay" v-preventReClick v-if="!!actstock" @click="emailpayFunc">邮寄购买</button>
+            <button class="emailpay noemailbtn" v-preventReClick v-else>邮寄购买</button>
+
+            <button class="gqtraising" v-preventReClick @click="gqtraisingFunc">工区自提</button>
+            <p>（自提购买后不支持取消订单）</p>
+        </div>
         <div class="login-wrap">
             <span class="orderCenter" @click="orderCenter"><i>订单中心</i></span>
             <div class="login_wrap_content_bg" v-if="loginShow"></div>
@@ -62,6 +66,7 @@ import BScroll from "better-scroll";
 export default {
     data() {
         return {
+            actstock: false,
             smartCaptcha: "",
             alertBoxVisible: false,
             alertBoxContent: "",
@@ -85,9 +90,14 @@ export default {
     },
     mounted() {
         this.pushCodeFunc();
-        // this.touchFunc();
     },
     methods: {
+        emailpayFunc() {
+            this.$router.push({'name': 'ordercheck'})
+        },
+        gqtraisingFunc() {
+            this.$router.push({'name': 'ordercheck_zt'})
+        },
         pushCodeFunc() {
             let that = this;
             this.smartCaptcha = new smartCaptcha({
@@ -227,6 +237,7 @@ export default {
         nowPayFunc() {
             if (localStorage.getItem("moon_email")) {
                 localStorage.removeItem('onemoreobj');
+                localStorage.removeItem('onemoreobj_zt');
                 this.$router.push("/ordercheck");
             } else {
                 this.loginShow = true;
@@ -244,38 +255,52 @@ export default {
                 this.routerurl = 'myorder';
             }
         },
-        touchFunc() {
-
-            let that = this;
-            this.$nextTick(() => {
-                this.scroll = new BScroll(this.$refs.wrapper, {
-                    //初始化better-scroll
-                    probeType: 1, //1 滚动的时候会派发scroll事件，会截流。2滚动的时候实时派发scroll事件，不会截流。 3除了实时派发scroll事件，在swipe的情况下仍然能实时派发scroll事件
-                    click: true //是否派发click事件
-                });
-                //滑动结束松开事件
-                this.scroll.on("touchEnd", pos => {
-                    if (pos.y > 65) {
-                        this.$router.push('/login');
-                    }
-                        this.text = pos.y
-                });
-            });
-        },
         
     }
 };
 </script>
 
 <style scoped>
-/* @-webkit-keyframes rotation {
-    from {
-        -webkit-transform: rotate(0deg);
-    }
-    to {
-        -webkit-transform: rotate(360deg);
-    }
-} */
+.productbtn {
+    position: absolute;
+    top: 13.51rem;
+    text-align: center;
+    width: 100%;
+}
+.productbtn button {
+    width: 1.95rem;
+    height: 49px;
+    display: block;
+    margin: 0 auto;
+    background: #EA626C;
+    border-radius: 25px;
+    border: 2px solid #C9C3C5;
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+}
+.productbtn p {
+    margin: 8px 0 0;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 14px;
+}
+.emailpay.noemailbtn {
+    background: #9A9A9A;
+    border: 0;
+}
+.emailpay {
+
+}
+
+.productbtn button.gqtraising {
+    margin: 16px auto 0;
+}
 .loginBgtop {
     overflow: hidden;
     position: absolute;
