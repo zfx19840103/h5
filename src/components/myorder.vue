@@ -666,7 +666,7 @@
   .wrapper {
     font-size: 14px;
     width: 100%;
-    background: #ccc;
+    background: #F4F4F4;
     overflow: hidden;
     position: relative;
     -webkit-overflow-scrolling: touch;
