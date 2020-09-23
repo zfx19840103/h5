@@ -1,7 +1,7 @@
 <template>
     <div class="ordercheckBg">
         <div v-bind:class="{ 'payloading': payloading }" class="ms_content">
-            <div class="topcontent">
+            <div class="topcontent" v-if="!payloading">
                 <div class="gqzt" @click="workarealink">
                     <strong>*</strong>
                     <span>{{ordercreate.area}}</span>
@@ -22,6 +22,38 @@
                             placeholder="请选择"
                             @change="emailztchange"
                             @visible-change="emailztselect"
+                        >
+                            <el-option
+                                v-for="item in emailztdata"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            ></el-option>
+                        </el-select>
+                    </div>
+                    <em>@</em>
+                </div>
+            </div>
+            <div class="topcontent" v-else>
+                <div class="gqzt">
+                    <strong>*</strong>
+                    <span>{{ordercreate.area}}</span>
+                    <i class="el-icon-arrow-right"></i>
+                </div>
+                <div class="emailzt">
+
+                        <strong>*</strong>
+                        
+                        <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe">
+
+                    <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
+                    <div class="emailztselectdiv">
+                        <el-select
+                            v-model="ordercreate.emailzt"
+                            size="small"
+                            class="emailztselect"
+                            placeholder="请选择"
+                            disabled
                         >
                             <el-option
                                 v-for="item in emailztdata"
@@ -748,7 +780,12 @@ input.emailztfe::-webkit-input-placeholder{
 .payloading .paynumall span,
 .payloading .paynumall span input,
 .payloading .detailowner .el-icon-arrow-right,
-.payloading .ordercenter span {
+.payloading .ordercenter span,
+.payloading .topcontent .gqzt span,
+.payloading .topcontent .emailzt .emailztfe,
+.payloading .topcontent i,
+.payloading .topcontent em,
+.payloading .topcontent strong {
     color: #9b9b9b !important;
 }
 .payTipsc i {
