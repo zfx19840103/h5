@@ -85,6 +85,7 @@
           loca.area = item.area
           loca.stock = item.stock
           loca.id = item.id
+          loca.warehouseCode = item.warehouseCode
           localStorage.setItem('numordersmethodobj_zt', JSON.stringify(loca))
           this.$router.push('/ordercheck_zt')
         }
