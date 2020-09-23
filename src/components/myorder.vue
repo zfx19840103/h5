@@ -14,7 +14,7 @@
                             </div>
                             <div class="center">
                                 <img
-                                    :src="item.snapshoot_cnt.sku_list[0].images[0]? item.snapshoot_cnt.sku_list[0].images[0] : ''"
+                                    :src="!!item.snapshoot_cnt.sku_list[0].images? item.snapshoot_cnt.sku_list[0].images[0] : ''"
                                     :onerror="defaultAvatar"
                                 />
                                 <p>{{item.snapshoot_cnt.sku_list[0].itemName}}</p>

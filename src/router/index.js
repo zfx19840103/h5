@@ -36,6 +36,12 @@ export default new Router({
             meta: { title: '2020中秋商城' }
         },
         {
+            path: '/ordercheck_zt',
+            name: 'ordercheck_zt',
+            component: () => import(/* webpackChunkName: "ordercheck_zt" */ '../components/ordercheck_zt.vue'),
+            meta: { title: '2020中秋商城' }
+        },
+        {
             path: '/ordertrack',
             name: 'ordertrack',
             component: () => import(/* webpackChunkName: "ordertrack" */ '../components/ordertrack.vue'),
@@ -57,6 +63,12 @@ export default new Router({
             path: '/orderdetail',
             name: 'orderdetail',
             component: () => import(/* webpackChunkName: "orderdetail" */ '../components/orderdetail.vue'),
+            meta: { title: '2020中秋商城' }
+        },
+        {
+            path: '/orderdetail_zt',
+            name: 'orderdetail_zt',
+            component: () => import(/* webpackChunkName: "orderdetail_zt" */ '../components/orderdetail_zt.vue'),
             meta: { title: '2020中秋商城' }
         },
         {
@@ -93,6 +105,12 @@ export default new Router({
             path: '/invoiceaddress',
             name: 'invoiceaddress',
             component: () => import(/* webpackChunkName: "invoiceaddress" */ '../components/invoiceaddress.vue'),
+            meta: { title: '2020中秋商城' }
+        },
+        {
+            path: '/workarea',
+            name: 'workarea',
+            component: () => import(/* webpackChunkName: "workarea" */ '../components/workarea.vue'),
             meta: { title: '2020中秋商城' }
         }
     ]
