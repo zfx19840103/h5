@@ -353,7 +353,7 @@
     },
     computed: {
       defaultAvatar() {
-        return 'this.src="' + require("../assets/img/default.png") + '"';
+        return 'this.src="' + require("../assets/img/default1.png") + '"';
       }
     },
     created() {
