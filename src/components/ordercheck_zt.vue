@@ -6,7 +6,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span :class="areaType == ''? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
+            <span :class="ordercreate.area == '请选择工区'? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
             <!-- <span>{{ordercreate.area}}</span> -->
             </div>
             <div class="emailzt">
@@ -33,7 +33,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span :class="areaType == ''? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
+            <span :class="ordercreate.area == '请选择工区'? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
             </div>
             <div class="emailzt">
             <strong>*</strong>
@@ -42,9 +42,10 @@
 
             <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
             <div class="emailztselectdiv">
-                <el-select v-model="ordercreate.emailzt" size="small" class="emailztselect" placeholder="请选择" disabled>
-                <el-option v-for="item in emailztdata" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
+                <div class="isDisabled">@{{ordercreate.emailzt}}</div>
+                <!-- <el-select v-model="ordercreate.emailzt" size="small" class="emailztselect" placeholder="请选择" disabled>
+                  <el-option v-for="item in emailztdata" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select> -->
             </div>
             <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe" />
             </div>
@@ -117,6 +118,7 @@
             <button v-else v-bind:class="{'paysubmitdisabled': !paysubmitdisabled}" disabled>去支付</button>
         </div>
     </div>
+    <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
     </div>
 </template>
 
@@ -135,7 +137,7 @@ import { stockList } from "@/api/workarea";
 export default {
     data() {
         return {
-            areaType: JSON.parse(localStorage.getItem('numordersmethodobj_zt')).area,
+            areaType: '',
             textright: false,
             allshowhide: true,
             stockshow: true,
@@ -631,8 +633,7 @@ export default {
         paysubmit() {
             let that = this;
             let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]$/;
-
-            if (that.ordercreate.area == "工区选择") {
+            if (that.ordercreate.area == "请选择工区") {
                 that.alertBox = {
                     tip: "请选择工区",
                     visible: true
@@ -797,7 +798,7 @@ export default {
       line-height: 26px;
       outline: 0;
       text-align: right;
-      font-size: 12px;
+      font-size: 14px;
       width: 1.2rem;
     }
 
@@ -879,6 +880,11 @@ export default {
     .checkTiShi{
       float: right !important;
       margin-right: 10px;
+    }
+    .isDisabled{
+      height: 32px;
+      line-height: 32px;
+      font-size: 16px;
     }
 
 

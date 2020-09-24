@@ -233,6 +233,7 @@
             <!-- <button class="orderdetailbtn" v-else @click="paycreateFunc">再来一单</button> -->
             <button class="orderdetailbtn" v-else @click="gotoindex">返回主页</button>
         </div>
+        <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
     </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog 
+        <el-dialog
             class="alertBox"
             @open="openCallback"
             :show-close = false
@@ -45,4 +45,3 @@ export default {
         padding: 0 10px;
     }
 </style>
-
