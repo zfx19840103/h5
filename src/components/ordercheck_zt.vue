@@ -292,11 +292,11 @@ export default {
             if (!!data) {
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].area == _area) {
-                        if(this.$route.query.payloading == 1 && data[i].actstock == 0) {
-                            _stock = 1;
-                        }else {
+                        // if(this.$route.query.payloading == 1 && data[i].actstock == 0) {
+                        //     _stock = 1;
+                        // }else {
                             _stock = data[i].actstock;
-                        }
+                        // }
                     }
                 }
             }
@@ -430,8 +430,8 @@ export default {
                         this.stockdisabled = true;
                         this.paysubmitdisabled = false;
                         this.stockshow = false;
-                        this.allshowhide = false;
-                        this.ordercreate.sku_list[0].sku_count = 0;
+                        this.allshowhide = true;
+                        this.ordercreate.sku_list[0].sku_count = 1;
                     }
                 }
             }
