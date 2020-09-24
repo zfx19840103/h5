@@ -360,7 +360,12 @@
       if (localStorage.getItem("order_isload") == 1 && this.$route.query.myorder != 1) {
         this.pollpay();
       } else {
-        this.orderloading = localStorage.getItem("order_loading");
+        if (this.detailType == 1) {
+          this.orderloading = localStorage.getItem("order_loading");
+        }
+        if (this.detailType == 2) {
+          this.orderloading = localStorage.getItem("order_loading_zt");
+        }
       }
       if (this.orderloading == "支付成功") {
         // this.logisticsinfoif = true;
@@ -1081,7 +1086,7 @@
       width: 10%;
       text-align: center;
     }
-    
+
     .areaImg .outlineT {
       position: relative;
       font-size: 25px;
