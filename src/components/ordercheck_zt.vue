@@ -292,7 +292,11 @@ export default {
             if (!!data) {
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].area == _area) {
-                        _stock = data[i].actstock;
+                        if(this.$route.query.payloading == 1 && data[i].actstock == 0) {
+                            _stock = 1;
+                        }else {
+                            _stock = data[i].actstock;
+                        }
                     }
                 }
             }
