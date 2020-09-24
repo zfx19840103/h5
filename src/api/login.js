@@ -3,6 +3,20 @@ import Cookie from 'js-cookie'
 import qs from 'qs';
 import API from './global';
 
+export function actstockapi() {
+    return new Promise((resolve, reject) => {
+        request
+            .post(`${API}/openapi/actstock`)
+            .then(function(response) {
+                resolve(response);
+            })
+            .catch(function(error) {
+                reject(error);
+            });
+    });
+    
+}
+
 export function loginPost(data) {
     return new Promise((resolve, reject) => {
         request

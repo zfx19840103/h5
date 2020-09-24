@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { loginPost, pushCode } from "@/api/login";
+import { loginPost, pushCode, actstockapi } from "@/api/login";
 
 import Cookie from "js-cookie";
 import * as CryptoJS from "crypto-js";
@@ -66,7 +66,7 @@ import BScroll from "better-scroll";
 export default {
     data() {
         return {
-            actstock: true,
+            actstock: false,
             smartCaptcha: "",
             alertBoxVisible: false,
             alertBoxContent: "",
@@ -88,10 +88,27 @@ export default {
     components: {
         AlertBox
     },
+    created() {
+        // this.actstockFunc();
+    },
     mounted() {
         this.pushCodeFunc();
     },
     methods: {
+        actstockFunc() {
+            let that = this;
+            actstockapi()
+                .then(function(res) {
+                    if(!!res && res.code == 20000) {
+                        that.actstock = res.data.actstock;
+                    }else {
+                        console.log(res.message);
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
         emailpayFunc() {
             if (localStorage.getItem("moon_email")) {
                 localStorage.removeItem('onemoreobj_zt');
