@@ -8,10 +8,17 @@
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="emailzt">
+                    <strong>*</strong>
 
-                        <strong>*</strong>
-                        
-                        <input type="text" @input="emailztfeinput" maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe">
+                    <input
+                        type="text"
+                        v-bind:class="{'textright': textright}"
+                        @input="emailztfeinput"
+                        maxlength="50"
+                        placeholder="自取人邮箱"
+                        v-model="ordercreate.emailztfe"
+                        class="emailztfe"
+                    />
 
                     <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
                     <div class="emailztselectdiv">
@@ -41,10 +48,16 @@
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="emailzt">
+                    <strong>*</strong>
 
-                        <strong>*</strong>
-                        
-                        <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe">
+                    <input
+                        type="text"
+                        disabled
+                        maxlength="50"
+                        placeholder="自取人邮箱"
+                        v-model="ordercreate.emailztfe"
+                        class="emailztfe"
+                    />
 
                     <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
                     <div class="emailztselectdiv">
@@ -79,7 +92,8 @@
                         <span>¥{{skuinfoparam.shop_price}}/盒</span>
                     </div>
                 </div>
-                <p class="paynumall" v-if="stockshow">  <!-- 判断库存为0的时候，输入框为0，不可以增减 -->
+                <p class="paynumall" v-if="stockshow">
+                    <!-- 判断库存为0的时候，输入框为0，不可以增减 -->
                     <span>购买数量</span>
                     <span class="paynumallloading" v-if="!payloading">
                         <i class="el-icon-circle-plus-outline" @click="paynumplus"></i>
@@ -160,7 +174,6 @@
                 <button @click="paysubmit" v-if="paysubmitdisabled" v-preventReClick>去支付</button>
                 <button v-else v-bind:class="{'paysubmitdisabled': !paysubmitdisabled}" disabled>去支付</button>
             </div>
-
         </div>
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
     </div>
@@ -169,7 +182,7 @@
 <script>
 import Cookie from "js-cookie";
 import AlertBox from "./alertbox";
-import merge from 'webpack-merge';
+import merge from "webpack-merge";
 import {
     getaddresslistdata,
     skuinfo_zt,
@@ -177,11 +190,11 @@ import {
     ordercreateapi_zt,
     orderpollingpay
 } from "@/api/ordercheck";
-
+import { stockList } from "@/api/workarea";
 export default {
     data() {
         return {
-
+            textright: false,
             allshowhide: true,
             stockshow: true,
             stockdisabled: false,
@@ -199,7 +212,7 @@ export default {
                 {
                     value: "jiyunhudong.com",
                     label: "jiyunhudong.com"
-                },
+                }
             ],
 
             detailowner: true,
@@ -280,11 +293,11 @@ export default {
                 },
                 is_invoice: 0, //默认不开发票
                 pathway: 2,
-                area: '工区选择',
-                emailztfe: '',
+                area: "工区选择",
+                emailztfe: "",
                 emailzt: "bytedance.com",
-                warehouseCode: '',
-                stock:-1,
+                warehouseCode: "",
+                stock: -1
             },
             maxnum: 5,
             onemore: !!this.$route.query.onemore
@@ -303,7 +316,7 @@ export default {
                 emailztfe: "", //邮箱地址前缀
                 emailzt: "bytedance.com", //邮箱地址后缀
                 stock: -1,
-                warehouseCode: '',
+                warehouseCode: ""
             }
         };
     },
@@ -311,15 +324,11 @@ export default {
         AlertBox
     },
     created() {
-
-
         this.skuinfoFunc();
 
         this.initonemoreFunc();
 
         this.numordersmethod();
-
-
     },
     computed: {
         defaultAvatar() {
@@ -327,24 +336,83 @@ export default {
         }
     },
     mounted() {
-
+        if (this.ordercreate.emailztfe.length < 1) {
+            this.textright = false;
+        } else {
+            this.textright = true;
+        }
     },
     methods: {
+        idfuncstock(data, id) {
+            let _stock = "";
+            if (!!data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id == id) {
+                        _stock = data[i].actstock;
+                    }
+                }
+            }
+
+            return _stock;
+        },
+        actstockFunc(code) {
+            let that = this;
+            let data = {
+                itemCode: code
+            };
+            stockList(data)
+                .then(function(res) {
+                    if (!!res && res.code == 20000) {
+                        if (!!res.data.info && res.data.info.length > 0) {
+                            let _id = JSON.parse(
+                                localStorage.getItem("numordersmethodobj_zt")
+                            ).id;
+                            that.ordercreate.stock = that.idfuncstock(
+                                res.data.info,
+                                _id
+                            );
+                        }
+                    } else if (!!res && res.code == 113005) {
+                        that.alertBox = {
+                            tip: res.message,
+                            visible: true
+                        };
+                        setTimeout(function() {
+                            that.$router.push("/login");
+                        }, 1000);
+                        localStorage.removeItem("moon_email");
+                    } else {
+                        that.alertBox = {
+                            tip: res.message,
+                            visible: true
+                        };
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
         emailztfeinput() {
+            if (this.ordercreate.emailztfe.length < 1) {
+                this.textright = false;
+            } else {
+                this.textright = true;
+            }
+
             this.$router.push({
-                query:merge(this.$route.query,{orderedit:1})
-            })
+                query: merge(this.$route.query, { orderedit: 1 })
+            });
             let l = JSON.parse(localStorage.getItem("numordersmethodobj_zt"));
             l.emailztfe = this.ordercreate.emailztfe;
-            localStorage.setItem('numordersmethodobj_zt', JSON.stringify(l));
+            localStorage.setItem("numordersmethodobj_zt", JSON.stringify(l));
         },
         emailztchange() {
             this.$router.push({
-                query:merge(this.$route.query,{orderedit:1})
-            })
+                query: merge(this.$route.query, { orderedit: 1 })
+            });
             let l = JSON.parse(localStorage.getItem("numordersmethodobj_zt"));
             l.emailzt = this.ordercreate.emailzt;
-            localStorage.setItem('numordersmethodobj_zt', JSON.stringify(l));
+            localStorage.setItem("numordersmethodobj_zt", JSON.stringify(l));
         },
         workarealink() {
             this.$router.push({
@@ -352,21 +420,25 @@ export default {
                 query: {
                     itemCode: this.skuinfoparam.itemCode,
                     onemore: this.$route.query.onemore
-                },
-            })
+                }
+            });
         },
         emailztselect(e) {
             this.emailztarrow = e;
         },
-        
+
         //初始执行内容存储
         numordersmethod() {
-        
-            let _l_nom = JSON.parse(localStorage.getItem("numordersmethodobj_zt"));
-            if(!_l_nom) {
-                localStorage.setItem('numordersmethodobj_zt', JSON.stringify(this.numordersmethodobj));
+            let _l_nom = JSON.parse(
+                localStorage.getItem("numordersmethodobj_zt")
+            );
+            if (!_l_nom) {
+                localStorage.setItem(
+                    "numordersmethodobj_zt",
+                    JSON.stringify(this.numordersmethodobj)
+                );
             }
-            let _onemore = JSON.parse(localStorage.getItem('onemoreobj_zt'));
+            let _onemore = JSON.parse(localStorage.getItem("onemoreobj_zt"));
 
             if (!!_l_nom) {
                 if (!_onemore || this.$route.query.orderedit == 1) {
@@ -379,17 +451,20 @@ export default {
                     this.ordercreate.stock = _l_nom.stock;
                     this.ordercreate.warehouseCode = _l_nom.warehouseCode;
 
-                    if(this.ordercreate.stock>0) { //判断库存数量大于0的时候去支付按钮正常显示,库存显示
+                    if (this.ordercreate.stock > 0) {
+                        //判断库存数量大于0的时候去支付按钮正常显示,库存显示
                         this.stockdisabled = true;
                         this.paysubmitdisabled = true;
                         this.allshowhide = true;
                         this.stockshow = true;
-                    }else if(this.ordercreate.stock<0){ //库存数量初始的时候去支付按钮正常显示,库存不显示
+                    } else if (this.ordercreate.stock < 0) {
+                        //库存数量初始的时候去支付按钮正常显示,库存不显示
                         this.stockdisabled = false;
                         this.paysubmitdisabled = true;
                         this.stockshow = true;
                         this.allshowhide = true;
-                    }else if(this.ordercreate.stock == 0) { //库存数量初始的时候去支付按钮置灰,库存显示
+                    } else if (this.ordercreate.stock == 0) {
+                        //库存数量初始的时候去支付按钮置灰,库存显示
                         this.stockdisabled = true;
                         this.paysubmitdisabled = false;
                         this.stockshow = false;
@@ -435,23 +510,39 @@ export default {
                         : 2;
 
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
-                this.ordercreate.warehouseCode = onemoreobj.snapshoot_cnt.warehouseCode;
-                this.ordercreate.area = onemoreobj.snapshoot_cnt.receive_info.detailAddress;
-                this.ordercreate.emailztfe = onemoreobj.snapshoot_cnt.receive_info.email.substring(0, onemoreobj.snapshoot_cnt.receive_info.email.indexOf('@'));
-                this.ordercreate.emailzt = onemoreobj.snapshoot_cnt.receive_info.email.substring(onemoreobj.snapshoot_cnt.receive_info.email.indexOf('@')+1, onemoreobj.snapshoot_cnt.receive_info.email.length);
+                this.ordercreate.warehouseCode =
+                    onemoreobj.snapshoot_cnt.warehouseCode;
+                this.ordercreate.area =
+                    onemoreobj.snapshoot_cnt.receive_info.detailAddress;
+                this.ordercreate.emailztfe = onemoreobj.snapshoot_cnt.receive_info.email.substring(
+                    0,
+                    onemoreobj.snapshoot_cnt.receive_info.email.indexOf("@")
+                );
+                this.ordercreate.emailzt = onemoreobj.snapshoot_cnt.receive_info.email.substring(
+                    onemoreobj.snapshoot_cnt.receive_info.email.indexOf("@") +
+                        1,
+                    onemoreobj.snapshoot_cnt.receive_info.email.length
+                );
 
+                this.numordersmethodobj.area =
+                    onemoreobj.snapshoot_cnt.receive_info.detailAddress;
+                this.numordersmethodobj.sku_count =
+                    onemoreobj.snapshoot_cnt.sku_list[0].sku_count;
+                this.numordersmethodobj.emailztfe = onemoreobj.snapshoot_cnt.receive_info.email.substring(
+                    0,
+                    onemoreobj.snapshoot_cnt.receive_info.email.indexOf("@")
+                );
+                this.numordersmethodobj.emailzt = onemoreobj.snapshoot_cnt.receive_info.email.substring(
+                    onemoreobj.snapshoot_cnt.receive_info.email.indexOf("@") +
+                        1,
+                    onemoreobj.snapshoot_cnt.receive_info.email.length
+                );
 
-                this.numordersmethodobj.area = onemoreobj.snapshoot_cnt.receive_info.detailAddress;
-                this.numordersmethodobj.sku_count = onemoreobj.snapshoot_cnt.sku_list[0].sku_count;
-                this.numordersmethodobj.emailztfe = onemoreobj.snapshoot_cnt.receive_info.email.substring(0, onemoreobj.snapshoot_cnt.receive_info.email.indexOf('@'));
-                this.numordersmethodobj.emailzt = onemoreobj.snapshoot_cnt.receive_info.email.substring(onemoreobj.snapshoot_cnt.receive_info.email.indexOf('@')+1, onemoreobj.snapshoot_cnt.receive_info.email.length);
-                
-                localStorage.setItem('numordersmethodobj_zt', JSON.stringify(this.numordersmethodobj));
-
-
+                localStorage.setItem(
+                    "numordersmethodobj_zt",
+                    JSON.stringify(this.numordersmethodobj)
+                );
             }
-
-
         },
 
         allnumFunc(num) {
@@ -492,7 +583,7 @@ export default {
                         that.skuinfoparam.updated_at = _info.updated_at;
                         that.skuinfoparam.freight = _info.freight;
 
-
+                        that.actstockFunc(that.skuinfoparam.itemCode);
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
@@ -515,7 +606,6 @@ export default {
                 });
         },
         paynumblur() {
-            
             if (this.ordercreate.sku_list[0].sku_count == "") {
                 this.ordercreate.sku_list[0].sku_count = 1;
             }
@@ -575,100 +665,109 @@ export default {
                 JSON.stringify(this.numordersmethodobj)
             );
             this.$router.push({
-                query:merge(this.$route.query,{orderedit:1})
-            })
+                query: merge(this.$route.query, { orderedit: 1 })
+            });
         },
 
         //创建订单
         paysubmit() {
-
             let that = this;
+            let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]$/;
+
             if (that.ordercreate.area == "工区选择") {
                 that.alertBox = {
                     tip: "请选择工区",
                     visible: true
                 };
-            } else if (that.ordercreate.emailztfe == ''){
+            } else if (that.ordercreate.emailztfe == "") {
                 that.alertBox = {
                     tip: "请选择自取人邮箱",
                     visible: true
-                };    
-            } else {
-                let _out_biz_code =
-                    this.$route.query.payloading == 1
-                        ? JSON.parse(
-                              localStorage.getItem("onemoreobj_zt")
-                          ).out_biz_code.substring(
-                              JSON.parse(
-                                  localStorage.getItem("onemoreobj_zt")
-                              ).out_biz_code.indexOf("_") + 1,
-                              JSON.parse(localStorage.getItem("onemoreobj_zt"))
-                                  .out_biz_code.length
-                          )
-                        : new Date().getTime() +
-                          "" +
-                          Math.floor(Math.random() * 4000 + 1000);
-                let data = {
-                    out_biz_code: _out_biz_code,
-                    sku_list: [
-                        {
-                            sku_code: that.skuinfoparam.itemCode,
-                            sku_count: that.ordercreate.sku_list[0].sku_count
-                        }
-                    ],
-                    pay_method: that.ordercreate.pay_method,
-                    receive_info: {
-                        email: `${that.ordercreate.emailztfe}@${that.ordercreate.emailzt}`,
-                        detailAddress: that.ordercreate.area,
-                    },
-                    orderdes: that.ordercreate.orderdes,
-                    itemCode: that.skuinfoparam.itemCode,
-                    warehouseCode: that.ordercreate.warehouseCode,
-                    is_invoice: 0, //是否开发票	0否 1是
-                    pathway: 2, //环境配置	1,2
-                    usage_scenario: "bytemoon_self" //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换 bytemoon_self 自提
                 };
-
-                ordercreateapi_zt(data)
-                    .then(function(res) {
-                        if (!!res && res.code == 20000) {
-                            //将商品code存在localstorge里
-                            localStorage.setItem(
-                                "order_code_zt",
-                                res.data.order_code
-                            );
-                            localStorage.setItem("order_isload_zt", 1);
-                            localStorage.setItem("orderloadingtime_zt", 0);
-                            localStorage.setItem("detailType", 2);
-
-                            if (that.ordercreate.pay_method == 1) {
-                                //1是支付宝 2是微信
-                                that.alipay(res);
-                            } else {
-                                that.wxpay(res);
+            } else if (that.ordercreate.emailztfe != "") {
+                // if (!reg.test(that.ordercreate.emailztfe)) {
+                if (false) {
+                    that.alertBox = {
+                        tip: "自取人邮箱格式不正确",
+                        visible: true
+                    };
+                } else {
+                    let _out_biz_code =
+                        this.$route.query.payloading == 1
+                            ? JSON.parse(
+                                  localStorage.getItem("onemoreobj_zt")
+                              ).out_biz_code.substring(
+                                  JSON.parse(
+                                      localStorage.getItem("onemoreobj_zt")
+                                  ).out_biz_code.indexOf("_") + 1,
+                                  JSON.parse(
+                                      localStorage.getItem("onemoreobj_zt")
+                                  ).out_biz_code.length
+                              )
+                            : new Date().getTime() +
+                              "" +
+                              Math.floor(Math.random() * 4000 + 1000);
+                    let data = {
+                        out_biz_code: _out_biz_code,
+                        sku_list: [
+                            {
+                                sku_code: that.skuinfoparam.itemCode,
+                                sku_count:
+                                    that.ordercreate.sku_list[0].sku_count
                             }
+                        ],
+                        pay_method: that.ordercreate.pay_method,
+                        receive_info: {
+                            email: `${that.ordercreate.emailztfe}@${that.ordercreate.emailzt}`,
+                            detailAddress: that.ordercreate.area
+                        },
+                        orderdes: that.ordercreate.orderdes,
+                        itemCode: that.skuinfoparam.itemCode,
+                        warehouseCode: that.ordercreate.warehouseCode,
+                        is_invoice: 0, //是否开发票	0否 1是
+                        pathway: 2, //环境配置	1,2
+                        usage_scenario: "bytemoon_self" //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换 bytemoon_self 自提
+                    };
 
-                        } else if (!!res && res.code == 113005) {
-                            that.alertBox = {
-                                tip: res.message,
-                                visible: true
-                            };
+                    ordercreateapi_zt(data)
+                        .then(function(res) {
+                            if (!!res && res.code == 20000) {
+                                //将商品code存在localstorge里
+                                localStorage.setItem(
+                                    "order_code_zt",
+                                    res.data.order_code
+                                );
+                                localStorage.setItem("order_isload_zt", 1);
+                                localStorage.setItem("orderloadingtime_zt", 0);
+                                localStorage.setItem("detailType", 2);
 
-                            setTimeout(function() {
-                                that.$router.push("/login");
-                            }, 1000);
-                            localStorage.removeItem("moon_email");
-                        } else {
-                            that.alertBox = {
-                                tip: res.message,
-                                visible: true
-                            };
-                        }
+                                if (that.ordercreate.pay_method == 1) {
+                                    //1是支付宝 2是微信
+                                    that.alipay(res);
+                                } else {
+                                    that.wxpay(res);
+                                }
+                            } else if (!!res && res.code == 113005) {
+                                that.alertBox = {
+                                    tip: res.message,
+                                    visible: true
+                                };
 
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
+                                setTimeout(function() {
+                                    that.$router.push("/login");
+                                }, 1000);
+                                localStorage.removeItem("moon_email");
+                            } else {
+                                that.alertBox = {
+                                    tip: res.message,
+                                    visible: true
+                                };
+                            }
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                }
             }
         },
 
@@ -685,19 +784,21 @@ export default {
             div.innerHTML = form;
             document.body.appendChild(div);
             document.querySelector("#alipay").children[0].submit();
-        },
+        }
     }
 };
 </script>
 
 
 <style>
-
 .payTogo button.paysubmitdisabled {
     background: #cccccc;
 }
-input.emailztfe::-webkit-input-placeholder{
+input.emailztfe::-webkit-input-placeholder {
     color: #333333;
+}
+.emailztfe.textright {
+    text-align: right;
 }
 .emailztfe {
     float: left;
@@ -707,6 +808,7 @@ input.emailztfe::-webkit-input-placeholder{
     font-weight: 400;
     color: #333333;
     border: 0;
+    text-align: left;
     height: 26px;
     line-height: 26px;
     outline: 0;
@@ -714,7 +816,9 @@ input.emailztfe::-webkit-input-placeholder{
 .emailzt em {
     font-style: normal;
     float: right;
-    margin: 17px 0 0;
+    margin: 17px -12px 0 0;
+    position: relative;
+    z-index: 1;
     font-size: 16px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
@@ -723,11 +827,11 @@ input.emailztfe::-webkit-input-placeholder{
 .emailztselectdiv {
     float: right;
     margin: 12px 0 0;
-    width: 150px;
+    width: 1.7rem;
     overflow: hidden;
 }
 .emailztselect {
-    width: 180px;
+    width: 1.9rem;
     border: 0;
 }
 .topcontent {
@@ -743,9 +847,9 @@ input.emailztfe::-webkit-input-placeholder{
     min-height: 56px;
 }
 .topcontent .emailzt i.emailztarrow {
-    transform:rotate(90deg);
-	-ms-transform:rotate(90deg); /* IE 9 */
-	-webkit-transform:rotate(90deg); /* Safari and Chrome */
+    transform: rotate(90deg);
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Safari and Chrome */
 }
 
 .topcontent .gqzt i,

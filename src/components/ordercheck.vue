@@ -119,15 +119,18 @@
                     </span>
                     <span class="paynumallloading" v-else>
                         <i class="el-icon-circle-plus-outline"></i>
+                        <div class="paynumallinputbg">
                         <input
                             type="number"
                             name="num"
                             v-model="ordercreate.sku_list[0].sku_count"
                             @input="paynuminput"
                             @blur="paynumblur"
-                            disabled
+
                             value="paynum"
                         />
+                        <span></span>
+                        </div>
                         <i class="el-icon-remove-outline"></i>
                     </span>
                 </p>
@@ -620,6 +623,7 @@ export default {
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         let _info = res.data.info;
+                        // let _info = that.info;
 
                         that.skuinfoparam.shop_price = _info.shop_price; //商品价格
                         that.skuinfoparam.images = !!_info.images
@@ -1318,6 +1322,10 @@ export default {
     color: #9b9b9b;
 }
 
+.paynumallinputbg {
+    float: right;
+    position: relative;
+}
 .paynumall input {
     border: 0;
     font-size: 15px;

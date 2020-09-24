@@ -122,6 +122,7 @@ export default {
         gqtraisingFunc() {
             if (localStorage.getItem("moon_email")) {
                 localStorage.removeItem('onemoreobj_zt');
+                localStorage.removeItem('numordersmethodobj_zt');
                 this.$router.push("/ordercheck_zt");
             } else {
                 this.loginShow = true;
