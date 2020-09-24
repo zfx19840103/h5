@@ -99,12 +99,11 @@
                     />
                     <div class="ordercenter">
                         <span>{{skuinfoparam.itemName}}</span>
-                        <!-- <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span> -->
                         <span>库存：{{skuinfoparam.actstock}}</span>
                         <span>¥{{skuinfoparam.shop_price}}/盒</span>
                     </div>
                 </div>
-                <p class="paynumall">
+                <p class="paynumall" v-if="stockshow"> <!-- 判断库存为0的时候，输入框为0，不可以增减 -->
                     <span>购买数量</span>
                     <span class="paynumallloading" v-if="!payloading">
                         <i class="el-icon-circle-plus-outline" @click="paynumplus"></i>
@@ -132,64 +131,36 @@
                         <i class="el-icon-remove-outline"></i>
                     </span>
                 </p>
+                <p class="paynumall" v-else>
+                    <span>购买数量</span>
+                    <span class="paynumallloading">
+                        <i class="el-icon-circle-plus-outline"></i>
+                        <input
+                            type="number"
+                            name="num"
+                            v-model="ordercreate.sku_list[0].sku_count"
+                            @input="paynuminput"
+                            @blur="paynumblur"
+                            disabled
+                            value="paynum"
+                        />
+                        <i class="el-icon-remove-outline"></i>
+                    </span>
+                </p>
                 <p>
                     <span>运费</span>
                     <em>{{skuinfoparam.freight != 0 ? '¥'+skuinfoparam.freight : '包邮'}}</em>
                 </p>
-                <!-- <p v-if="!payloading" @click="linkInvoice"> -->
-                <!-- <p v-if="!payloading" @click="linkInvoice">
-                    <span>发票</span>
-                    <i class="el-icon-arrow-right"></i>
-                    <em v-if="ordercreate.is_invoice == 0">不开发票</em>
-                    <span class="invoicecontent" v-else>
-                        <em>{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
-                    </span>
-                </p>
-                <p v-else>
-                    <span>发票</span>
-                    <i
-                        v-bind:class="ordercreate.invoice_info.invoice_type == 2 ? 'el-icon-arrow-right company' : 'el-icon-arrow-right'"
-                    ></i>
-                    <em v-if="ordercreate.is_invoice == 0">不开发票</em>
-                    <span class="invoicecontent" v-else>
-                        <em>{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
-                    </span>
-                </p> -->
-                
                 <p>
                     <span>发票</span>
-                    <!-- <i class="el-icon-arrow-right"></i> -->
                     <em>交易完成后可开具发票</em>
                 </p>
-
-                <!-- <p>
-                    <span>订单备注</span>
-                    <i class="el-icon-arrow-right"></i>
-                    <em>
-                        <input
-                            v-if="!payloading"
-                            type="text"
-                            class="orderdes"
-                            v-model="ordercreate.orderdes"
-                            @input="orderlll"
-                            placeholder="点击填写备注"
-                            maxlength="100"
-                        />
-                        <input
-                            v-else
-                            disabled
-                            type="text"
-                            class="orderdes"
-                            v-model="ordercreate.orderdes"
-                            @input="orderlll"
-                            placeholder="点击填写备注"
-                            maxlength="100"
-                        />
-                    </em>
-                </p> -->
             </div>
             <div class="payType">
-                <h3>支付方式<span class="payTypeTip">*请在五分钟之内支付</span></h3>
+                <h3>
+                    支付方式
+                    <span class="payTypeTip">*请在五分钟之内支付</span>
+                </h3>
                 <label>
                     <span class="wxicon"></span>微信支付
                     <input
@@ -200,26 +171,23 @@
                         @change="paymethodFunc"
                     />
                 </label>
-                <!-- <label>
-                    <span class="alipayicon"></span>支付宝
-                    <input
-                        type="radio"
-                        name="payType"
-                        v-model="ordercreate.pay_method"
-                        value="1"
-                        @change="paymethodFunc"
-                    />
-                </label> -->
             </div>
             <!-- <div class="payTipsc"><i>*</i>9月16日-9月19日持续发货，预计19日全部发货完成</div> -->
             <div class="payTogotop"></div>
             <div class="payTogo">
-                <span>
+                <span v-if="allshowhide">
                     合计：
                     <em>¥{{priceallFunc(skuinfoparam.shop_price, ordercreate.sku_list[0].sku_count)}}</em>
                     共{{allnumFunc(ordercreate.sku_list[0].sku_count)}}件
                 </span>
-                <button @click="paysubmit" v-preventReClick>去支付</button>
+                <span v-else>
+                    合计：
+                    <em>¥0</em>
+                    共0件
+                </span>
+                <button @click="paysubmit" v-if="paysubmitdisabled" v-preventReClick>去支付</button>
+                <button v-else v-bind:class="{'paysubmitdisabled': !paysubmitdisabled}" disabled>去支付</button>
+
             </div>
             <el-drawer
                 size="50%"
@@ -231,7 +199,12 @@
                 <h3>选择收货地址</h3>
                 <ul v-if="drawerAddress" class="drawerAddress">
                     <li v-for="(item, index) in addressData" data-type="0" :key="index">
-                        <div @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" class="list-box">
+                        <div
+                            @touchstart="touchStart"
+                            @touchmove="touchMove"
+                            @touchend="touchEnd"
+                            class="list-box"
+                        >
                             <label @click="addresslistclick(item)">
                                 <input
                                     type="radio"
@@ -276,7 +249,9 @@ import {
 export default {
     data() {
         return {
-            h5html: "",
+            stockshow: true,
+            paysubmitdisabled: true,
+            allshowhide: true,
             detailowner: true,
             drawer: false,
             direction: "btt",
@@ -325,7 +300,7 @@ export default {
                 images: "",
                 barCode: "",
                 warehouseCode: "",
-                actstock: '',
+                actstock: "",
                 status: "",
                 created_at: "",
                 updated_at: "",
@@ -367,10 +342,28 @@ export default {
                     : false,
             numordersmethodobj: {
                 sku_count: 1,
-                orderdes: '',
-                pay_method: 2,//1，支付宝 2，微信
+                orderdes: "",
+                pay_method: 2 //1，支付宝 2，微信
             },
-            
+            info: {
+                itemCode: "MA0000001",
+                shopPrice: 1,
+                itemName: "2020\u4e2d\u79cb\u6708\u997c\u793c\u76d2",
+                images: [
+                    "https://static.tsingglobal.com/activity/bytemoon/images/items001.png"
+                ],
+                barCode: "MA0000001",
+                warehouseCode: "25670",
+                customerid: "",
+                ownercode: "",
+                status: 0,
+                created_at: "2020-09-17T09:56:01.000000Z",
+                updated_at: "2020-09-17T09:56:01.000000Z",
+                actstock: 0,
+                shop_price: "0.01",
+                freight: "0.00"
+        
+            }
         };
     },
     components: {
@@ -380,7 +373,7 @@ export default {
         this.addaddressList();
 
         // if (this.onemore != 1) {
-            this.skuinfoFunc();
+        this.skuinfoFunc();
         // }
         this.initonemoreFunc();
 
@@ -403,7 +396,11 @@ export default {
     },
     methods: {
         orderlll() {
-            this.numordersmethodobj = !!JSON.parse(localStorage.getItem('numordersmethodobj')) ? JSON.parse(localStorage.getItem('numordersmethodobj')) : this.numordersmethodobj;
+            this.numordersmethodobj = !!JSON.parse(
+                localStorage.getItem("numordersmethodobj")
+            )
+                ? JSON.parse(localStorage.getItem("numordersmethodobj"))
+                : this.numordersmethodobj;
             this.numordersmethodobj.orderdes = this.ordercreate.orderdes;
             localStorage.setItem(
                 "numordersmethodobj",
@@ -411,7 +408,11 @@ export default {
             );
         },
         paymethodFunc() {
-            this.numordersmethodobj = !!JSON.parse(localStorage.getItem('numordersmethodobj')) ? JSON.parse(localStorage.getItem('numordersmethodobj')) : this.numordersmethodobj;            
+            this.numordersmethodobj = !!JSON.parse(
+                localStorage.getItem("numordersmethodobj")
+            )
+                ? JSON.parse(localStorage.getItem("numordersmethodobj"))
+                : this.numordersmethodobj;
             this.numordersmethodobj.pay_method = this.ordercreate.pay_method;
             localStorage.setItem(
                 "numordersmethodobj",
@@ -419,11 +420,11 @@ export default {
             );
         },
         numordersmethod() {
-            let _l_nom = JSON.parse(localStorage.getItem('numordersmethodobj'));
+            let _l_nom = JSON.parse(localStorage.getItem("numordersmethodobj"));
 
-            if(!!_l_nom) {
-                if(this.$route.query.isaddress == 1){
-                // if(this.$route.query.isaddress == 1 || JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1){
+            if (!!_l_nom) {
+                if (this.$route.query.isaddress == 1) {
+                    // if(this.$route.query.isaddress == 1 || JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1){
                     this.ordercreate.sku_list[0].sku_count = _l_nom.sku_count;
                     this.ordercreate.orderdes = _l_nom.orderdes;
                     this.ordercreate.pay_method = _l_nom.pay_method;
@@ -438,15 +439,17 @@ export default {
             // this.skuinfoparam.actstock = 1000;
 
             if (this.onemore == 1) {
-                this.skuinfoparam.images =
-                    !!onemoreobj.snapshoot_cnt.sku_list[0].images ? onemoreobj.snapshoot_cnt.sku_list[0].images[0] : '';
+                this.skuinfoparam.images = !!onemoreobj.snapshoot_cnt
+                    .sku_list[0].images
+                    ? onemoreobj.snapshoot_cnt.sku_list[0].images[0]
+                    : "";
                 this.skuinfoparam.itemName =
                     onemoreobj.snapshoot_cnt.sku_list[0].itemName;
                 this.skuinfoparam.freight =
                     onemoreobj.snapshoot_cnt.sku_list[0].freight;
 
                 // this.skuinfoparam.actstock =
-                    // onemoreobj.snapshoot_cnt.sku_list[0].actstock;
+                // onemoreobj.snapshoot_cnt.sku_list[0].actstock;
 
                 this.skuinfoparam.shop_price =
                     onemoreobj.snapshoot_cnt.sku_list[0].shop_price;
@@ -458,78 +461,114 @@ export default {
 
                 this.ordercreate.is_invoice =
                     onemoreobj.snapshoot_cnt.is_invoice;
-                this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes ? onemoreobj.snapshoot_cnt.orderdes : '';
+                this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes
+                    ? onemoreobj.snapshoot_cnt.orderdes
+                    : "";
                 this.ordercreate.pay_method =
-                    (onemoreobj.snapshoot_cnt.pay_method == 1 || onemoreobj.snapshoot_cnt.pay_method == 2) ? 2 : 2;
+                    onemoreobj.snapshoot_cnt.pay_method == 1 ||
+                    onemoreobj.snapshoot_cnt.pay_method == 2
+                        ? 2
+                        : 2;
 
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
 
                 //发票
-                if(!!JSON.parse(localStorage.getItem('invoiceobj'))) {
-                // if(!!JSON.parse(localStorage.getItem('invoiceobj')) && JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
+                if (!!JSON.parse(localStorage.getItem("invoiceobj"))) {
+                    // if(!!JSON.parse(localStorage.getItem('invoiceobj')) && JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
                     this.ordercreate.invoice_info = {
-                        invoice_type: JSON.parse(localStorage.getItem('invoiceobj')).invoice_type,
-                        register_phone: JSON.parse(localStorage.getItem('invoiceobj')).register_phone,
-                        register_address: JSON.parse(localStorage.getItem('invoiceobj')).register_address,
-                        taxpayer_number: JSON.parse(localStorage.getItem('invoiceobj')).taxpayer_number,
-                        invoice_name: JSON.parse(localStorage.getItem('invoiceobj')).invoice_name,
-                        register_bank: JSON.parse(localStorage.getItem('invoiceobj')).register_bank,
-                        register_bank_account: JSON.parse(localStorage.getItem('invoiceobj')).register_bank_account,
-                    }
-                }else {
-
+                        invoice_type: JSON.parse(
+                            localStorage.getItem("invoiceobj")
+                        ).invoice_type,
+                        register_phone: JSON.parse(
+                            localStorage.getItem("invoiceobj")
+                        ).register_phone,
+                        register_address: JSON.parse(
+                            localStorage.getItem("invoiceobj")
+                        ).register_address,
+                        taxpayer_number: JSON.parse(
+                            localStorage.getItem("invoiceobj")
+                        ).taxpayer_number,
+                        invoice_name: JSON.parse(
+                            localStorage.getItem("invoiceobj")
+                        ).invoice_name,
+                        register_bank: JSON.parse(
+                            localStorage.getItem("invoiceobj")
+                        ).register_bank,
+                        register_bank_account: JSON.parse(
+                            localStorage.getItem("invoiceobj")
+                        ).register_bank_account
+                    };
+                } else {
                     this.ordercreate.invoice_info = {
                         invoice_type: !!onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.invoice_type
-                        : "",
-                    register_phone: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.register_phone
-                        : "",
-                    register_address: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.register_address
-                        : "",
-                    taxpayer_number: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.taxpayer_number
-                        : "",
-                    invoice_name: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.invoice_name
-                        : "",
-                    register_bank: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.register_bank
-                        : "",
-                    register_bank_account: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info
-                              .register_bank_account
-                        : ""
+                            ? onemoreobj.snapshoot_cnt.invoice_info.invoice_type
+                            : "",
+                        register_phone: onemoreobj.snapshoot_cnt.invoice_info
+                            ? onemoreobj.snapshoot_cnt.invoice_info
+                                  .register_phone
+                            : "",
+                        register_address: onemoreobj.snapshoot_cnt.invoice_info
+                            ? onemoreobj.snapshoot_cnt.invoice_info
+                                  .register_address
+                            : "",
+                        taxpayer_number: onemoreobj.snapshoot_cnt.invoice_info
+                            ? onemoreobj.snapshoot_cnt.invoice_info
+                                  .taxpayer_number
+                            : "",
+                        invoice_name: onemoreobj.snapshoot_cnt.invoice_info
+                            ? onemoreobj.snapshoot_cnt.invoice_info.invoice_name
+                            : "",
+                        register_bank: onemoreobj.snapshoot_cnt.invoice_info
+                            ? onemoreobj.snapshoot_cnt.invoice_info
+                                  .register_bank
+                            : "",
+                        register_bank_account: onemoreobj.snapshoot_cnt
+                            .invoice_info
+                            ? onemoreobj.snapshoot_cnt.invoice_info
+                                  .register_bank_account
+                            : ""
+                    };
                 }
-                };
             }
 
             //地址
             this.detailowner = true;
             if (_isaddress == 1) {
-                that.detailownerParam = !!JSON.parse(localStorage.getItem("addressobj")) ? {
-                    id: JSON.parse(localStorage.getItem("addressobj")).id,
-                    receiver: JSON.parse(localStorage.getItem("addressobj"))
-                        .receiver,
-                    phone: JSON.parse(localStorage.getItem("addressobj")).phone,
-                    address: JSON.parse(localStorage.getItem("addressobj"))
-                        .address,
-                    user_id: JSON.parse(localStorage.getItem("addressobj"))
-                        .user_id,
-                    provincial: JSON.parse(localStorage.getItem("addressobj"))
-                        .provincial,
-                    created_at: JSON.parse(localStorage.getItem("addressobj"))
-                        .created_at,
-                    updated_at: JSON.parse(localStorage.getItem("addressobj"))
-                        .updated_at,
-                    city: JSON.parse(localStorage.getItem("addressobj")).city,
-                    area: JSON.parse(localStorage.getItem("addressobj")).area
-                } : {};
+                that.detailownerParam = !!JSON.parse(
+                    localStorage.getItem("addressobj")
+                )
+                    ? {
+                          id: JSON.parse(localStorage.getItem("addressobj")).id,
+                          receiver: JSON.parse(
+                              localStorage.getItem("addressobj")
+                          ).receiver,
+                          phone: JSON.parse(localStorage.getItem("addressobj"))
+                              .phone,
+                          address: JSON.parse(
+                              localStorage.getItem("addressobj")
+                          ).address,
+                          user_id: JSON.parse(
+                              localStorage.getItem("addressobj")
+                          ).user_id,
+                          provincial: JSON.parse(
+                              localStorage.getItem("addressobj")
+                          ).provincial,
+                          created_at: JSON.parse(
+                              localStorage.getItem("addressobj")
+                          ).created_at,
+                          updated_at: JSON.parse(
+                              localStorage.getItem("addressobj")
+                          ).updated_at,
+                          city: JSON.parse(localStorage.getItem("addressobj"))
+                              .city,
+                          area: JSON.parse(localStorage.getItem("addressobj"))
+                              .area
+                      }
+                    : {};
             } else {
-                if(!!onemoreobj) {
+                if (!!onemoreobj) {
                     this.detailownerParam.receiver =
-                    onemoreobj.snapshoot_cnt.receive_info.name;
+                        onemoreobj.snapshoot_cnt.receive_info.name;
                     this.detailownerParam.phone =
                         onemoreobj.snapshoot_cnt.receive_info.mobile;
                     this.detailownerParam.address =
@@ -583,10 +622,12 @@ export default {
                         let _info = res.data.info;
 
                         that.skuinfoparam.shop_price = _info.shop_price; //商品价格
-                        that.skuinfoparam.images = !!_info.images ? _info.images[0] : '';
+                        that.skuinfoparam.images = !!_info.images
+                            ? _info.images[0]
+                            : "";
                         that.skuinfoparam.itemName = _info.itemName;
-                        that.skuinfoparam.actstock = _info.actstock;
-                        // that.maxnum = _info.actstock;
+                        that.skuinfoparam.actstock = _info.actstock<0 ? 0 : _info.actstock;
+
                         that.skuinfoparam.itemCode = _info.itemCode;
                         that.skuinfoparam.shop_price = _info.shop_price;
                         that.skuinfoparam.barCode = _info.barCode;
@@ -595,6 +636,14 @@ export default {
                         that.skuinfoparam.created_at = _info.created_at;
                         that.skuinfoparam.updated_at = _info.updated_at;
                         that.skuinfoparam.freight = _info.freight;
+
+                        if(that.skuinfoparam.actstock == 0) {
+                            that.stockshow = false;
+                            that.paysubmitdisabled = false;
+                            that.allshowhide = false;
+                            that.ordercreate.sku_list[0].sku_count = 0;
+                        }
+
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
@@ -720,13 +769,11 @@ export default {
                             }
 
                             if (that.$route.query.onemore == 1) {
-
                                 if (that.$route.query.isaddress == 1) {
                                     var _addressobj = JSON.parse(
                                         localStorage.getItem("addressobj")
                                     );
-                                    if (!!_addressobj) { 
-                                    
+                                    if (!!_addressobj) {
                                         that.addressData.map(itm => {
                                             if (itm.id == _addressobj.id) {
                                                 localStorage.setItem(
@@ -736,8 +783,9 @@ export default {
                                                 that.selectaddress = itm;
                                             }
                                         });
-                                    }else {
-                                        that.selectaddress = that.addressData[0];
+                                    } else {
+                                        that.selectaddress =
+                                            that.addressData[0];
                                         localStorage.setItem(
                                             "addressobj",
                                             JSON.stringify(that.selectaddress)
@@ -759,10 +807,20 @@ export default {
                                     var _onemoreobj = JSON.parse(
                                         localStorage.getItem("onemoreobj")
                                     );
-                                    var _receive_info = _onemoreobj.snapshoot_cnt.receive_info;
+                                    var _receive_info =
+                                        _onemoreobj.snapshoot_cnt.receive_info;
                                     that.addressData.map(itm => {
-                                        if (itm.provincial == _receive_info.province && itm.address == _receive_info.detailAddress && itm.receiver == _receive_info.name && itm.phone == _receive_info.mobile && itm.city == _receive_info.city && itm.area == _receive_info.area) {
-
+                                        if (
+                                            itm.provincial ==
+                                                _receive_info.province &&
+                                            itm.address ==
+                                                _receive_info.detailAddress &&
+                                            itm.receiver ==
+                                                _receive_info.name &&
+                                            itm.phone == _receive_info.mobile &&
+                                            itm.city == _receive_info.city &&
+                                            itm.area == _receive_info.area
+                                        ) {
                                             that.selectaddress = itm;
                                         }
                                     });
@@ -773,7 +831,7 @@ export default {
                         } else {
                             if (that.$route.query.onemore == 1) {
                                 that.detailowner = true;
-                            }else {
+                            } else {
                                 that.detailowner = false;
                             }
                             that.drawerAddress = false;
@@ -838,7 +896,7 @@ export default {
                 if (this.ordercreate.sku_list[0].sku_count.length > 0) {
                     this.ordercreate.sku_list[0].sku_count = 1;
                 }
-            }else if(Number(this.ordercreate.sku_list[0].sku_count)<0) {
+            } else if (Number(this.ordercreate.sku_list[0].sku_count) < 0) {
                 this.ordercreate.sku_list[0].sku_count = 1;
             } else {
                 this.ordercreate.sku_list[0].sku_count = Number(
@@ -848,9 +906,13 @@ export default {
             this.storagecount();
         },
         storagecount() {
-            this.numordersmethodobj = !!JSON.parse(localStorage.getItem('numordersmethodobj')) ? JSON.parse(localStorage.getItem('numordersmethodobj')) : this.numordersmethodobj;
+            this.numordersmethodobj = !!JSON.parse(
+                localStorage.getItem("numordersmethodobj")
+            )
+                ? JSON.parse(localStorage.getItem("numordersmethodobj"))
+                : this.numordersmethodobj;
             this.numordersmethodobj.sku_count = this.ordercreate.sku_list[0].sku_count;
-            console.log(this.numordersmethodobj)
+            console.log(this.numordersmethodobj);
             localStorage.setItem(
                 "numordersmethodobj",
                 JSON.stringify(this.numordersmethodobj)
@@ -1015,55 +1077,7 @@ export default {
             document.body.appendChild(div);
             document.querySelector("#alipay").children[0].submit();
         },
-        // linkInvoice() {
-        //     let _invoiceobjsss = localStorage.getItem("invoiceobj")
-        //     //     ? JSON.parse(localStorage.getItem("invoiceobj")).id
-        //     //     : 0;
 
-        //     let obj = {};
-        //     if(!_invoiceobjsss && !!JSON.parse(localStorage.getItem("onemoreobj"))){
-        //         let _invoiceinfo = JSON.parse(localStorage.getItem("onemoreobj")).snapshoot_cnt.invoice_info;
-        //         if(_invoiceinfo.invoice_type == 2) {
-        //             obj = {
-        //                 invoice: 1,
-        //                 invoice_name: _invoiceinfo.invoice_name,
-        //                 invoice_type: "2",
-        //                 isqueryinvoice: 1,
-        //                 is_invoice: 1,
-        //                 register_address: _invoiceinfo.register_address,
-        //                 register_bank: _invoiceinfo.register_bank,
-        //                 register_bank_account: _invoiceinfo.register_bank_account,
-        //                 register_phone: _invoiceinfo.register_phone,
-        //                 taxpayer_number: _invoiceinfo.taxpayer_number,
-        //             }
-        //         }else if(_invoiceinfo.invoice_type == 1) {
-        //             obj = {
-        //                 invoice: 1,
-        //                 invoice_name: _invoiceinfo.invoice_name,
-        //                 invoice_type: "1",
-        //                 is_invoice: 1,
-        //                 isqueryinvoice: 1,
-        //             }
-        //         }else {
-        //             obj = {
-        //                 id: 0,
-        //                 invoice: 1,
-        //                 is_invoice: 0,
-        //                 isqueryinvoice: 1,
-        //             }
-        //         }
-        //         localStorage.setItem('invoiceobj', JSON.stringify(obj));
-        //     }
-
-        //     this.$router.push({
-        //         name: "addinvoice",
-        //         query: { 
-        //             // invoiceId: _invoiceId,
-        //             onemore: this.$route.query.onemore,
-        //             isaddress: this.$route.query.isaddress,
-        //         }
-        //     });
-        // },
         touchStart(e) {
             // alert(e.touches[0].clientX)
             this.startX = e.touches[0].clientX;
@@ -1071,7 +1085,7 @@ export default {
         },
         touchMove(e) {
             var _x = e.touches[0].pageX;
-            if((Math.abs(_x-this.startX)>7)){
+            if (Math.abs(_x - this.startX) > 7) {
                 e.preventDefault();
             }
         },
@@ -1168,6 +1182,9 @@ export default {
 </script>
 
 <style scoped>
+.payTogo button.paysubmitdisabled {
+    background: #cccccc;
+}
 .payloading .detailowner p,
 .payloading .payTogo span,
 .payloading .payTogo span em,
@@ -1187,7 +1204,7 @@ export default {
     margin-right: 5px;
     font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
     font-weight: normal;
-    color: #FF502C;
+    color: #ff502c;
     font-style: normal;
 }
 .payTipsc {
@@ -1206,7 +1223,7 @@ export default {
     margin-right: 12px;
     font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
     font-weight: normal;
-    color: #FF502C;
+    color: #ff502c;
 }
 .payTogotop {
     position: relative;
@@ -1223,10 +1240,10 @@ export default {
     left: 0;
 }
 .detailowner_bottom .bgicon1 {
-    background: #325AB4;
+    background: #325ab4;
 }
-.detailowner_bottom .bgicon2{
-    background: #00C8D2;
+.detailowner_bottom .bgicon2 {
+    background: #00c8d2;
 }
 .detailowner_bottom span {
     margin: 0 0.13rem 0 0;
@@ -1327,7 +1344,7 @@ export default {
     width: 0.48rem;
     height: 100%;
     line-height: 58px;
-    background: #3C8CFF;
+    background: #3c8cff;
     font-size: 12px;
     color: #fff;
     text-align: center;
