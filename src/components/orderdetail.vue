@@ -491,14 +491,26 @@
       },
       gotoPayFunc() {
         let that = this;
-
-        that.$router.push({
-          name: "ordercheck",
-          query: {
-            onemore: 1,
-            payloading: 1,
-          }
-        });
+        
+        if (that.detailType == 1) {
+          that.$router.push({
+            name: "ordercheck",
+            query: {
+              onemore: 1,
+              payloading: 1,
+            }
+          });
+        }
+        if (that.detailType == 2) {
+          that.$router.push({
+            name: "ordercheck_zt",
+            query: {
+              onemore: 1,
+              payloading: 1,
+            }
+          });
+        }
+        
         if (that.detailType == 1) {
           localStorage.removeItem('numordersmethodobj');
           localStorage.removeItem('addressobj');
