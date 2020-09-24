@@ -643,14 +643,12 @@ export default {
                         if(that.skuinfoparam.actstock == 0) {
                             if(that.$route.query.payloading == 1) {
                                 that.stockshow = true;
-                                that.paysubmitdisabled = true;
+                                that.paysubmitdisabled = false;
                                 that.allshowhide = true;
-                                that.ordercreate.sku_list[0].sku_count = 1;
                             }else {
                                 that.stockshow = false;
                                 that.paysubmitdisabled = false;
                                 that.allshowhide = false;
-                                that.ordercreate.sku_list[0].sku_count = 0;
                             }
                         }
 
