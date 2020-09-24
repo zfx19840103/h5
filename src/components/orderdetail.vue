@@ -123,7 +123,7 @@
     <div v-else class="selfClass">
       <div class="detailTip">
         <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(order_statusbk)}}</h3>
-        <h3 v-else>{{orderloadingtime}} {{orderloading}}</h3>
+        <h3 v-else>{{orderloadingtime_zt}} {{orderloading}}</h3>
 
         <div v-if="!!logisticsinfoif" class="tip" @click="logisticsinfoFunc">
           <span>{{logistics_status}}</span>
@@ -229,6 +229,8 @@
       return {
         orderloadingtime: !!localStorage.getItem("orderloadingtime") ?
           localStorage.getItem("orderloadingtime") : 0,
+          orderloadingtime_zt: !!localStorage.getItem("orderloadingtime_zt") ?
+          localStorage.getItem("orderloadingtime_zt") : 0,
         alertBox: {
           visible: false,
           tip: ""
@@ -372,7 +374,7 @@
         this.$router.push({
           name: "ordertrack",
           query: {
-            orderCode: that.info.order_code
+            orderCode: localStorage.getItem('order_code_zt')
           }
         });
       },
@@ -399,7 +401,7 @@
         let that = this;
 
         let data = {
-          orderCode: that.info.order_code
+          orderCode: localStorage.getItem('order_code_zt')
         };
         logisticsinfo(data)
           .then(function(res) {
@@ -423,7 +425,7 @@
       },
       getData() {
         let data = {
-          order_code: this.info.order_code
+          order_code: localStorage.getItem('order_code_zt')
         };
         let that = this;
         orderinfo(data)
@@ -506,7 +508,7 @@
       },
       payovertimeFunc() {
         let data = {
-          order_code: this.info.order_code
+          order_code: localStorage.getItem('order_code_zt')
         };
         let that = this;
         payovertime(data)
@@ -528,7 +530,7 @@
       },
       pollpay() {
         let data = {
-          order_code: this.info.order_code
+          order_code: localStorage.getItem('order_code_zt')
         };
         let that = this;
         var n = 60 * 5,
@@ -1075,7 +1077,7 @@
       font-size: 25px;
       display: inline-block;
       vertical-align: middle;
-      width: 32px;
+      width: 10%;
       text-align: center;
     }
 
@@ -1085,6 +1087,7 @@
       min-height: 53px;
       padding: 20px 0;
       line-height: 26px;
+      width: 88%;
     }
 
     .areaDetail div:first-child {
@@ -1099,7 +1102,7 @@
     }
 
     .emailS {
-      width: 220px;
+      // width: 210px;
       display: inline-block;
       word-break: break-all;
       vertical-align: top;
