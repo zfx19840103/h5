@@ -784,6 +784,7 @@
       margin: 12px 0 0;
       width: 1.6rem;
       overflow: hidden;
+      color: #696464!important;
     }
 
     .emailztselect {
@@ -854,6 +855,7 @@
     .payloading .ordercenter span,
     .payloading .topcontent .gqzt span,
     .payloading .topcontent .emailzt .emailztfe,
+    .payloading .el-input.is-disabled .el-input__inner,
     .payloading .topcontent i,
     .payloading .topcontent em,
     .payloading .topcontent strong {

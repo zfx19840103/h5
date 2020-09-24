@@ -77,5 +77,6 @@ html, body {
 }
 .payloading .el-input.is-disabled .el-input__inner{
   color: #696464 !important;
+  background-color: #FFFFFF !important;
 }
 </style>
