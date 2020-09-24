@@ -1,178 +1,125 @@
 <template>
-    <div class="ordercheckBg ordercheckClass">
-        <div v-bind:class="{ 'payloading': payloading }" class="ms_content">
-            <div class="topcontent" v-if="!payloading">
-                <div class="gqzt" @click="workarealink">
-                    <strong>*</strong>
-                    <span>{{ordercreate.area}}</span>
-                    <i class="el-icon-arrow-right"></i>
-                </div>
-                <div class="emailzt">
-                    <strong>*</strong>
-
-                    <input
-                        type="text"
-                        v-bind:class="{'textright': textright}"
-                        @input="emailztfeinput"
-                        maxlength="50"
-                        placeholder="自取人邮箱"
-                        v-model="ordercreate.emailztfe"
-                        class="emailztfe"
-                    />
-
-                    <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
-                    <div class="emailztselectdiv">
-                        <el-select
-                            v-model="ordercreate.emailzt"
-                            size="small"
-                            class="emailztselect"
-                            placeholder="请选择"
-                            @change="emailztchange"
-                            @visible-change="emailztselect"
-                        >
-                            <el-option
-                                v-for="item in emailztdata"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            ></el-option>
-                        </el-select>
-                    </div>
-                    <em>@</em>
-                </div>
+  <div class="ordercheckBg ordercheckClass">
+    <div v-bind:class="{ 'payloading': payloading }" class="ms_content">
+        <div class="topcontent" v-if="!payloading">
+            <div class="gqzt" @click="workarealink">
+            <strong>*</strong>
+            <span>工区</span>
+            <i class="el-icon-arrow-right"></i>
+            <span class="tiShi">请选择工区</span>
+            <!-- <span>{{ordercreate.area}}</span> -->
             </div>
-            <div class="topcontent" v-else>
-                <div class="gqzt">
-                    <strong>*</strong>
-                    <span>{{ordercreate.area}}</span>
-                    <i class="el-icon-arrow-right"></i>
-                </div>
-                <div class="emailzt">
-                    <strong>*</strong>
+            <div class="emailzt">
+            <strong>*</strong>
+            <span>邮箱</span>
 
-                    <input
-                        type="text"
-                        disabled
-                        maxlength="50"
-                        placeholder="自取人邮箱"
-                        v-model="ordercreate.emailztfe"
-                        class="emailztfe"
-                    />
 
-                    <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
-                    <div class="emailztselectdiv">
-                        <el-select
-                            v-model="ordercreate.emailzt"
-                            size="small"
-                            class="emailztselect"
-                            placeholder="请选择"
-                            disabled
-                        >
-                            <el-option
-                                v-for="item in emailztdata"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            ></el-option>
-                        </el-select>
-                    </div>
-                    <em>@</em>
-                </div>
+            <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
+            <div class="emailztselectdiv">
+                <el-select v-model="ordercreate.emailzt" size="small" class="emailztselect" placeholder="请选择" @change="emailztchange"
+                @visible-change="emailztselect">
+                <el-option v-for="item in emailztdata" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
             </div>
-            <div class="order">
-                <div class="orderh">
-                    <img :src="skuinfoparam.images? skuinfoparam.images : ''" />
-                    <div class="ordercenter">
-                        <span>{{skuinfoparam.itemName}}</span>
-                        <span v-if="stockdisabled">库存：{{ordercreate.stock}}</span>
-                        <span v-else></span>
-                        <span>¥{{skuinfoparam.shop_price}}/盒</span>
-                    </div>
-                </div>
-                <p class="paynumall" v-if="stockshow">
-                    <!-- 判断库存为0的时候，输入框为0，不可以增减 -->
-                    <span>购买数量</span>
-                    <span class="paynumallloading" v-if="!payloading">
-                        <i class="el-icon-circle-plus-outline" @click="paynumplus"></i>
-                        <input
-                            type="number"
-                            name="num"
-                            v-model="ordercreate.sku_list[0].sku_count"
-                            @input="paynuminput"
-                            @blur="paynumblur"
-                            value="paynum"
-                        />
-                        <i class="el-icon-remove-outline" @click="paynumremove"></i>
-                    </span>
-                    <span class="paynumallloading" v-else>
-                        <i class="el-icon-circle-plus-outline"></i>
-                        <input
-                            type="number"
-                            name="num"
-                            v-model="ordercreate.sku_list[0].sku_count"
-                            @input="paynuminput"
-                            @blur="paynumblur"
-                            disabled
-                            value="paynum"
-                        />
-                        <i class="el-icon-remove-outline"></i>
-                    </span>
-                </p>
-                <p class="paynumall" v-else>
-                    <span>购买数量</span>
-                    <span class="paynumallloading">
-                        <i class="el-icon-circle-plus-outline"></i>
-                        <input
-                            type="number"
-                            name="num"
-                            v-model="ordercreate.sku_list[0].sku_count"
-                            @input="paynuminput"
-                            @blur="paynumblur"
-                            disabled
-                            value="paynum"
-                        />
-                        <i class="el-icon-remove-outline"></i>
-                    </span>
-                </p>
-
-                <p>
-                    <span>发票</span>
-                    <em>交易完成后可开具发票</em>
-                </p>
-            </div>
-            <div class="payType">
-                <h3>
-                    支付方式
-                    <span class="payTypeTip">*请在五分钟之内支付</span>
-                </h3>
-                <label>
-                    <span class="wxicon"></span>微信支付
-                    <input
-                        type="radio"
-                        name="payType"
-                        v-model="ordercreate.pay_method"
-                        value="2"
-                    />
-                </label>
-            </div>
-            <!-- <div class="payTipsc"><i>*</i>9月16日-9月19日持续发货，预计19日全部发货完成</div> -->
-            <div class="payTogotop"></div>
-            <div class="payTogo">
-                <span v-if="allshowhide">
-                    合计：
-                    <em>¥{{priceallFunc(skuinfoparam.shop_price, ordercreate.sku_list[0].sku_count)}}</em>
-                    共{{allnumFunc(ordercreate.sku_list[0].sku_count)}}件
-                </span>
-                <span v-else>
-                    合计：
-                    <em>¥0</em>
-                    共0件
-                </span>
-                <button @click="paysubmit" v-if="paysubmitdisabled" v-preventReClick>去支付</button>
-                <button v-else v-bind:class="{'paysubmitdisabled': !paysubmitdisabled}" disabled>去支付</button>
+            <em>@</em>
+            <input type="text" v-bind:class="{'textright': textright}" @input="emailztfeinput" maxlength="50" placeholder="请输入自取人邮箱"
+                v-model="ordercreate.emailztfe" class="emailztfe" />
             </div>
         </div>
-        <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
+        <div class="topcontent" v-else>
+            <div class="gqzt">
+            <!-- <strong>*</strong>
+            <span>{{ordercreate.area}}</span>
+            <i class="el-icon-arrow-right"></i> -->
+            <strong>*</strong>
+            <span>工区</span>
+            <i class="el-icon-arrow-right"></i>
+            <span class="tiShi">请选择工区</span>
+            <!-- <span>{{ordercreate.area}}</span> -->
+            </div>
+            <div class="emailzt">
+            <strong>*</strong>
+            <span>邮箱</span>
+            <!-- <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe" /> -->
+
+            <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
+            <div class="emailztselectdiv">
+                <el-select v-model="ordercreate.emailzt" size="small" class="emailztselect" placeholder="请选择" disabled>
+                <el-option v-for="item in emailztdata" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+            </div>
+            <em>@</em>
+            <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe" />
+            </div>
+        </div>
+        <div class="order">
+            <div class="orderh">
+            <img :src="skuinfoparam.images? skuinfoparam.images : ''" />
+            <div class="ordercenter">
+                <span>{{skuinfoparam.itemName}}</span>
+                <span v-if="stockdisabled">库存：{{ordercreate.stock}}</span>
+                <span v-else></span>
+                <span>¥{{skuinfoparam.shop_price}}/盒</span>
+            </div>
+            </div>
+            <p class="paynumall" v-if="stockshow">
+            <!-- 判断库存为0的时候，输入框为0，不可以增减 -->
+            <span>购买数量</span>
+            <span class="paynumallloading" v-if="!payloading">
+                <i class="el-icon-circle-plus-outline" @click="paynumplus"></i>
+                <input type="number" name="num" v-model="ordercreate.sku_list[0].sku_count" @input="paynuminput" @blur="paynumblur"
+                value="paynum" />
+                <i class="el-icon-remove-outline" @click="paynumremove"></i>
+            </span>
+            <span class="paynumallloading" v-else>
+                <i class="el-icon-circle-plus-outline"></i>
+                <input type="number" name="num" v-model="ordercreate.sku_list[0].sku_count" @input="paynuminput" @blur="paynumblur"
+                disabled value="paynum" />
+                <i class="el-icon-remove-outline"></i>
+            </span>
+            </p>
+            <p class="paynumall" v-else>
+            <span>购买数量</span>
+            <span class="paynumallloading">
+                <i class="el-icon-circle-plus-outline"></i>
+                <input type="number" name="num" v-model="ordercreate.sku_list[0].sku_count" @input="paynuminput" @blur="paynumblur"
+                disabled value="paynum" />
+                <i class="el-icon-remove-outline"></i>
+            </span>
+            </p>
+
+            <p>
+            <span>发票</span>
+            <em>交易完成后可开具发票</em>
+            </p>
+        </div>
+        <div class="payType">
+            <h3>
+            支付方式
+            <span class="payTypeTip">*请在五分钟之内支付</span>
+            </h3>
+            <label>
+            <span class="wxicon"></span>微信支付
+            <input type="radio" name="payType" v-model="ordercreate.pay_method" value="2" />
+            </label>
+        </div>
+        <!-- <div class="payTipsc"><i>*</i>9月16日-9月19日持续发货，预计19日全部发货完成</div> -->
+        <div class="payTogotop"></div>
+        <div class="payTogo">
+            <span v-if="allshowhide">
+            合计：
+            <em>¥{{priceallFunc(skuinfoparam.shop_price, ordercreate.sku_list[0].sku_count)}}</em>
+            共{{allnumFunc(ordercreate.sku_list[0].sku_count)}}件
+            </span>
+            <span v-else>
+            合计：
+            <em>¥0</em>
+            共0件
+            </span>
+            <button @click="paysubmit" v-if="paysubmitdisabled" v-preventReClick>去支付</button>
+            <button v-else v-bind:class="{'paysubmitdisabled': !paysubmitdisabled}" disabled>去支付</button>
+        </div>
+    </div>
     </div>
 </template>
 
@@ -833,17 +780,24 @@ export default {
     }
 
     .emailztfe {
-        float: left;
-        margin: 15px 0 0 0;
-        font-size: 14px;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #333333;
-        border: 0;
-        text-align: left;
-        height: 26px;
-        line-height: 26px;
-        outline: 0;
+      float: right;
+      margin: 15px 0 0 0;
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #333333;
+      border: 0;
+      text-align: left;
+      height: 26px;
+      line-height: 26px;
+      outline: 0;
+      text-align: right;
+      font-size: 12px;
+      width: 1.2rem;
+    }
+
+    input::-webkit-input-placeholder{
+        color:#9B9B9B !important;
     }
 
     .emailzt em {
@@ -859,10 +813,11 @@ export default {
     }
 
     .emailztselectdiv {
-        float: right;
-        margin: 12px 0 0;
-        width: 1.6rem;
-        overflow: hidden;
+      float: right;
+      margin: 12px 0 0;
+      width: 1.6rem;
+      overflow: hidden;
+      color: #696464!important;
     }
 
     .emailztselect {
@@ -910,6 +865,19 @@ export default {
         color: #333333;
     }
 
+    .tiShi{
+      float: right !important;
+      margin-right: 10px;
+      color: #9B9B9B !important;
+      font-size: 12px !important;
+    }
+
+
+
+
+
+
+
     .topcontent .gqzt strong,
     .topcontent .emailzt strong {
         color: #ea626c;
@@ -933,6 +901,7 @@ export default {
     .payloading .ordercenter span,
     .payloading .topcontent .gqzt span,
     .payloading .topcontent .emailzt .emailztfe,
+    .payloading .el-input.is-disabled .el-input__inner,
     .payloading .topcontent i,
     .payloading .topcontent em,
     .payloading .topcontent strong {

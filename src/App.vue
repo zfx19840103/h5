@@ -77,5 +77,10 @@ html, body {
 }
 .payloading .el-input.is-disabled .el-input__inner{
   color: #696464 !important;
+  background-color: #FFFFFF !important;
+}
+.emailztselectdiv .el-input--suffix .el-input__inner{
+  padding-right: 30px !important;
+  text-align: right !important;
 }
 </style>

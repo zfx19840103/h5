@@ -17,7 +17,7 @@
 export default {
     data: function() {
         return {
-            closeTime: 1000 //定时1秒关闭
+            closeTime: 1500 //定时1秒关闭
         };
     },
     props: ["alertBox"],
