@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="detailowner">
-        <i class="el-icon-location-outline"></i>
+        <i class="el-icon-location-outline outlineO"></i>
         <p>
           <span>{{info.snapshoot_cnt.receive_info.name}}</span>
           {{info.snapshoot_cnt.receive_info.mobile}}
@@ -722,7 +722,7 @@
     background: #f4f4f4;
     /* padding-bottom: 50px; */
   }
-  .shopClass .detailowner .el-icon-location-outline {
+  .shopClass .detailowner .outlineO {
       position: relative;
       top: 30px;
       left: 12px;
