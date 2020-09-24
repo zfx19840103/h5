@@ -400,12 +400,8 @@
       logisticsinfoData() {
         let that = this;
 
-        var data = {}
-        if (that.detailType == 1) {
-          data.orderCode = that.info.order_code
-        }
-        if (that.detailType == 2) {
-          data.orderCode = localStorage.getItem('order_code_zt')
+        let data = {
+          order_code: this.$route.query.out_trade_no
         }
 
         logisticsinfo(data)
@@ -430,12 +426,8 @@
       },
       getData() {
         let that = this;
-        var data = {}
-        if (that.detailType == 1) {
-          data.orderCode = that.info.order_code
-        }
-        if (that.detailType == 2) {
-          data.orderCode = localStorage.getItem('order_code_zt')
+        let data = {
+          order_code: this.$route.query.out_trade_no
         }
         orderinfo(data)
           .then(function(res) {
