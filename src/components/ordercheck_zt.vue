@@ -6,7 +6,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span class="tiShi">{{ordercreate.area}}</span>
+            <span :class="ordercreate.area == '请选择工区'? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
             <!-- <span>{{ordercreate.area}}</span> -->
             </div>
             <div class="emailzt">
@@ -33,7 +33,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span class="tiShi">{{ordercreate.area}}</span>
+            <span :class="ordercreate.area == '请选择工区'? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
             </div>
             <div class="emailzt">
             <strong>*</strong>
@@ -797,7 +797,7 @@ export default {
       line-height: 26px;
       outline: 0;
       text-align: right;
-      font-size: 12px;
+      font-size: 14px;
       width: 1.2rem;
     }
 
