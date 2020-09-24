@@ -454,7 +454,7 @@
         let data = {
           page: pages,
           pagesize: this.myorderDatapagesize,
-          usage_scenario: "bytemoon_pay"
+          usage_scenario: "bytemoon_pay,bytemoon_self"
         };
         orderlist(data)
           .then(function(res) {
