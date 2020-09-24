@@ -66,7 +66,7 @@ import BScroll from "better-scroll";
 export default {
     data() {
         return {
-            actstock: false,
+            actstock: true,
             smartCaptcha: "",
             alertBoxVisible: false,
             alertBoxContent: "",
