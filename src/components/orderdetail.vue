@@ -982,7 +982,7 @@
       margin: 10px 0 0;
     }
 
-    
+
 
     .detailowner p {
       position: relative;
