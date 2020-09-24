@@ -427,7 +427,7 @@
       getData() {
         let that = this;
         let data = {
-          orderCode: this.$route.query.out_trade_no
+          order_code: this.$route.query.out_trade_no
         }
         orderinfo(data)
           .then(function(res) {
