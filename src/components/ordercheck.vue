@@ -395,6 +395,7 @@ export default {
     },
     mounted() {
         // this.initinvoiceFunc();
+        window.reload();
     },
     methods: {
         orderlll() {
