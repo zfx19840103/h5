@@ -89,7 +89,7 @@ export default {
         AlertBox
     },
     created() {
-        // this.actstockFunc();
+        this.actstockFunc();
     },
     mounted() {
         this.pushCodeFunc();
@@ -100,7 +100,8 @@ export default {
             actstockapi()
                 .then(function(res) {
                     if(!!res && res.code == 20000) {
-                        that.actstock = res.data.actstock;
+
+                        that.actstock = !!res.data.info && res.data.info.actstock > 0 ? true : false;
                     }else {
                         console.log(res.message);
                     }

@@ -6,7 +6,7 @@ import API from './global';
 export function actstockapi() {
     return new Promise((resolve, reject) => {
         request
-            .post(`${API}/openapi/actstock`)
+            .get(`${API}/openapi/activity/byte/sku/info`)
             .then(function(response) {
                 resolve(response);
             })
@@ -14,9 +14,8 @@ export function actstockapi() {
                 reject(error);
             });
     });
-    
-}
 
+}
 export function loginPost(data) {
     return new Promise((resolve, reject) => {
         request
