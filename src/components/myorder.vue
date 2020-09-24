@@ -27,7 +27,7 @@
               <button v-bind:class="{ 'pay': item.pay_status == 0 }" v-if="item.pay_status == 0" @click="gotoPayFunc(item)">去支付</button>
               <button v-else @click="onemorePayFunc(item)">再来一单</button>
 
-              <div v-if="item.bytemoon_pay_type == 1">
+              <div v-if="item.usage_scenario == 'bytemoon_pay'">
                 <button v-if="item.order_status == 2 || item.order_status == 3 || item.order_status == 4" @click="deleteorder(item, index)">取消订单</button>
 
                 <button class="linkDetail invoiceopen" v-if="(item.order_status == 5 || item.order_status == 4) && item.invoice_status == 0"
