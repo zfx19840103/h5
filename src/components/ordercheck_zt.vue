@@ -181,6 +181,7 @@ import {
 export default {
     data() {
         return {
+
             allshowhide: true,
             stockshow: true,
             stockdisabled: false,
@@ -349,6 +350,7 @@ export default {
             this.$router.push({
                 name: "workarea",
                 query: {
+                    itemCode: this.skuinfoparam.itemCode,
                     onemore: this.$route.query.onemore
                 },
             })
@@ -490,6 +492,8 @@ export default {
                         that.skuinfoparam.created_at = _info.created_at;
                         that.skuinfoparam.updated_at = _info.updated_at;
                         that.skuinfoparam.freight = _info.freight;
+
+
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
