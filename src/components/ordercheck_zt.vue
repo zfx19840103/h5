@@ -6,7 +6,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span class="tiShi">{{ordercreate.area}}</span>
+            <span :class="areaType == ''? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
             <!-- <span>{{ordercreate.area}}</span> -->
             </div>
             <div class="emailzt">
@@ -34,7 +34,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span class="checkTiShi">{{ordercreate.area}}</span>
+            <span :class="areaType == ''? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
             </div>
             <div class="emailzt">
             <strong>*</strong>
@@ -137,6 +137,7 @@ import { stockList } from "@/api/workarea";
 export default {
     data() {
         return {
+            areaType: JSON.parse(localStorage.getItem('numordersmethodobj_zt')).area,
             textright: false,
             allshowhide: true,
             stockshow: true,
