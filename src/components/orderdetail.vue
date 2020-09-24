@@ -133,7 +133,7 @@
       </div>
       <div class="detailowner">
         <div class="areaImg">
-          <i class="el-icon-location-outline"></i>
+          <i class="el-icon-location-outline outlineT"></i>
         </div>
         <div class="areaDetail">
           <div>
@@ -722,13 +722,6 @@
     background: #f4f4f4;
     /* padding-bottom: 50px; */
   }
-  .shopClass .detailowner .outlineO {
-      position: relative;
-      top: 30px;
-      left: 12px;
-      float: left;
-      font-size: 25px;
-    }
   .shopClass {
     div.ordernews p em {
       margin-left: 0.12rem;
@@ -982,13 +975,19 @@
       margin: 10px 0 0;
     }
 
-
-
     .detailowner p {
       position: relative;
       left: 20px;
       text-align: left;
       margin: 0;
+    }
+
+    .detailowner .outlineO {
+      position: relative;
+      top: 30px;
+      left: 12px;
+      float: left;
+      font-size: 25px;
     }
 
     .detailowner_address span {
@@ -1081,6 +1080,11 @@
       vertical-align: middle;
       width: 10%;
       text-align: center;
+    }
+    
+    .areaImg .outlineT {
+      position: relative;
+      font-size: 25px;
     }
 
     .areaDetail {
