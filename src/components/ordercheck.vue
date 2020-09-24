@@ -395,7 +395,7 @@ export default {
     },
     mounted() {
         // this.initinvoiceFunc();
-        window.reload();
+
     },
     methods: {
         orderlll() {
@@ -648,10 +648,12 @@ export default {
                         }else if(that.skuinfoparam.actstock == 0){
                             // 库存为0的时候
                             if(that.$route.query.payloading == 1) {
+                                //去支付
                                 that.stockshow = false; 
                                 that.paysubmitdisabled = true; 
                                 that.allshowhide = true; 
                             }else {
+                                // 新下单
                                 that.stockshow = false;
                                 that.paysubmitdisabled = false; 
                                 that.allshowhide = false; 
