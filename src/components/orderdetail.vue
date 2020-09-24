@@ -400,12 +400,12 @@
       logisticsinfoData() {
         let that = this;
 
-        if (detailType == 1) {
+        if (that.detailType == 1) {
           let data = {
             orderCode: that.info.order_code
           };
         }
-        if (detailType == 2) {
+        if (that.detailType == 2) {
           let data = {
             orderCode: localStorage.getItem('order_code_zt')
           };
@@ -432,17 +432,17 @@
           });
       },
       getData() {
-        if (detailType == 1) {
+        let that = this;
+        if (that.detailType == 1) {
           let data = {
             orderCode: that.info.order_code
           };
         }
-        if (detailType == 2) {
+        if (that.detailType == 2) {
           let data = {
             orderCode: localStorage.getItem('order_code_zt')
           };
         }
-        let that = this;
         orderinfo(data)
           .then(function(res) {
             if (!!res && res.code == 20000) {
