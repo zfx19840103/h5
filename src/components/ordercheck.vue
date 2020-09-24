@@ -95,7 +95,6 @@
                 <div class="orderh">
                     <img
                         :src="skuinfoparam.images? skuinfoparam.images : ''"
-                        :onerror="defaultAvatar"
                     />
                     <div class="ordercenter">
                         <span>{{skuinfoparam.itemName}}</span>
