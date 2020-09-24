@@ -229,7 +229,7 @@
       return {
         orderloadingtime: !!localStorage.getItem("orderloadingtime") ?
           localStorage.getItem("orderloadingtime") : 0,
-          orderloadingtime_zt: !!localStorage.getItem("orderloadingtime_zt") ?
+        orderloadingtime_zt: !!localStorage.getItem("orderloadingtime_zt") ?
           localStorage.getItem("orderloadingtime_zt") : 0,
         alertBox: {
           visible: false,
@@ -521,13 +521,13 @@
           .catch(function(error) {
             console.log(error);
           });
-          if (that.detailType == 1) {
-            localStorage.setItem("order_loading", that.orderloading);
-            localStorage.setItem("order_isload", 0);
-          } else {
-            localStorage.setItem("order_loading_zt", that.orderloading);
-            localStorage.setItem("order_isload_zt", 0);
-          }
+        if (that.detailType == 1) {
+          localStorage.setItem("order_loading", that.orderloading);
+          localStorage.setItem("order_isload", 0);
+        } else {
+          localStorage.setItem("order_loading_zt", that.orderloading);
+          localStorage.setItem("order_isload_zt", 0);
+        }
       },
       pollpay() {
         let data = {
@@ -722,6 +722,13 @@
     background: #f4f4f4;
     /* padding-bottom: 50px; */
   }
+  .shopClass .detailowner .el-icon-location-outline {
+      position: relative;
+      top: 30px;
+      left: 12px;
+      float: left;
+      font-size: 25px;
+    }
   .shopClass {
     div.ordernews p em {
       margin-left: 0.12rem;
@@ -975,13 +982,7 @@
       margin: 10px 0 0;
     }
 
-    .detailowner .el-icon-location-outline {
-      position: relative;
-      top: 30px;
-      left: 12px;
-      float: left;
-      font-size: 25px;
-    }
+    
 
     .detailowner p {
       position: relative;
