@@ -632,7 +632,7 @@ export default {
             let that = this;
             let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]$/;
 
-            if (that.ordercreate.area == "工区选择") {
+            if (that.ordercreate.area == "请选择工区") {
                 that.alertBox = {
                     tip: "请选择工区",
                     visible: true
