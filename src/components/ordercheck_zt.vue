@@ -42,9 +42,10 @@
 
             <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
             <div class="emailztselectdiv">
-                <el-select v-model="ordercreate.emailzt" size="small" class="emailztselect" placeholder="请选择" disabled>
-                <el-option v-for="item in emailztdata" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
+                <div class="isDisabled">@{{ordercreate.emailzt}}</div>
+                <!-- <el-select v-model="ordercreate.emailzt" size="small" class="emailztselect" placeholder="请选择" disabled>
+                  <el-option v-for="item in emailztdata" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select> -->
             </div>
             <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe" />
             </div>
@@ -879,6 +880,11 @@ export default {
     .checkTiShi{
       float: right !important;
       margin-right: 10px;
+    }
+    .isDisabled{
+      height: 32px;
+      line-height: 32px;
+      font-size: 16px;
     }
 
 
