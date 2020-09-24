@@ -34,8 +34,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span class="tiShi">请选择工区</span>
-            <!-- <span>{{ordercreate.area}}</span> -->
+            <span class="checkTiShi">{{ordercreate.area}}</span>
             </div>
             <div class="emailzt">
             <strong>*</strong>
@@ -870,6 +869,10 @@ export default {
       margin-right: 10px;
       color: #9B9B9B !important;
       font-size: 12px !important;
+    }
+    .checkTiShi{
+      float: right !important;
+      margin-right: 10px;
     }
 
 
