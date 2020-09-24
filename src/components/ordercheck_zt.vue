@@ -6,7 +6,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span class="tiShi">{{ordercreate.area}}</span>
+            <span :class="areaType == ''? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
             <!-- <span>{{ordercreate.area}}</span> -->
             </div>
             <div class="emailzt">
@@ -21,7 +21,6 @@
                 <el-option v-for="item in emailztdata" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
             </div>
-            <em>@</em>
             <input type="text" v-bind:class="{'textright': textright}" @input="emailztfeinput" maxlength="50" placeholder="请输入自取人邮箱"
                 v-model="ordercreate.emailztfe" class="emailztfe" />
             </div>
@@ -34,7 +33,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span class="checkTiShi">{{ordercreate.area}}</span>
+            <span :class="areaType == ''? 'tiShi' : 'checkTiShi'">{{ordercreate.area}}</span>
             </div>
             <div class="emailzt">
             <strong>*</strong>
@@ -47,7 +46,6 @@
                 <el-option v-for="item in emailztdata" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
             </div>
-            <em>@</em>
             <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe" />
             </div>
         </div>
@@ -137,6 +135,7 @@ import { stockList } from "@/api/workarea";
 export default {
     data() {
         return {
+            areaType: JSON.parse(localStorage.getItem('numordersmethodobj_zt')).area,
             textright: false,
             allshowhide: true,
             stockshow: true,
@@ -146,15 +145,15 @@ export default {
             emailztdata: [
                 {
                     value: "bytedance.com",
-                    label: "bytedance.com"
+                    label: "@bytedance.com"
                 },
                 {
                     value: "ad.bytedance.com",
-                    label: "ad.bytedance.com"
+                    label: "@ad.bytedance.com"
                 },
                 {
                     value: "jiyunhudong.com",
-                    label: "jiyunhudong.com"
+                    label: "@jiyunhudong.com"
                 }
             ],
 
@@ -666,7 +665,7 @@ export default {
                             : new Date().getTime() +
                               "" +
                               Math.floor(Math.random() * 4000 + 1000);
-                    
+
                     let _warehouseCode;
                     if(this.$route.query.onemore == 1) {
                         _warehouseCode = JSON.parse(localStorage.getItem('onemoreobj_zt')).snapshoot_cnt.warehouseCode;
