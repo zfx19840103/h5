@@ -398,7 +398,7 @@ export default {
 
             if (!!_l_nom) {
                 if (!_onemore || this.$route.query.orderedit == 1) {
-                    this.ordercreate.sku_list[0].sku_count = _l_nom.sku_count;
+                    
                     this.ordercreate.orderdes = _l_nom.orderdes;
                     this.ordercreate.pay_method = _l_nom.pay_method;
                     this.ordercreate.area = _l_nom.area;
@@ -408,12 +408,14 @@ export default {
                     this.ordercreate.warehouseCode = _l_nom.warehouseCode;
 
                     if (this.ordercreate.stock > 0) {
+                        this.ordercreate.sku_list[0].sku_count = _l_nom.sku_count;
                         //判断库存数量大于0的时候去支付按钮正常显示,库存显示
                         this.stockdisabled = true;
                         this.paysubmitdisabled = true;
                         this.allshowhide = true;
                         this.stockshow = true;
                     } else if (this.ordercreate.stock < 0) {
+                        this.ordercreate.sku_list[0].sku_count = _l_nom.sku_count;
                         //库存数量初始的时候去支付按钮正常显示,库存不显示
                         this.stockdisabled = false;
                         this.paysubmitdisabled = true;
