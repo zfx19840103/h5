@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="detailowner">
-        <i class="el-icon-location-outline"></i>
+        <i class="el-icon-location-outline outlineO"></i>
         <p>
           <span>{{info.snapshoot_cnt.receive_info.name}}</span>
           {{info.snapshoot_cnt.receive_info.mobile}}
@@ -123,7 +123,7 @@
     <div v-else class="selfClass">
       <div class="detailTip">
         <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(order_statusbk)}}</h3>
-        <h3 v-else>{{orderloadingtime}} {{orderloading}}</h3>
+        <h3 v-else>{{orderloadingtime_zt}} {{orderloading}}</h3>
 
         <div v-if="!!logisticsinfoif" class="tip" @click="logisticsinfoFunc">
           <span>{{logistics_status}}</span>
@@ -133,7 +133,7 @@
       </div>
       <div class="detailowner">
         <div class="areaImg">
-          <i class="el-icon-location-outline"></i>
+          <i class="el-icon-location-outline outlineT"></i>
         </div>
         <div class="areaDetail">
           <div>
@@ -229,6 +229,8 @@
       return {
         orderloadingtime: !!localStorage.getItem("orderloadingtime") ?
           localStorage.getItem("orderloadingtime") : 0,
+        orderloadingtime_zt: !!localStorage.getItem("orderloadingtime_zt") ?
+          localStorage.getItem("orderloadingtime_zt") : 0,
         alertBox: {
           visible: false,
           tip: ""
@@ -351,14 +353,19 @@
     },
     computed: {
       defaultAvatar() {
-        return 'this.src="' + require("../assets/img/default.png") + '"';
+        return 'this.src="' + require("../assets/img/default1.png") + '"';
       }
     },
     created() {
       if (localStorage.getItem("order_isload") == 1 && this.$route.query.myorder != 1) {
         this.pollpay();
       } else {
-        this.orderloading = localStorage.getItem("order_loading");
+        if (this.detailType == 1) {
+          this.orderloading = localStorage.getItem("order_loading");
+        }
+        if (this.detailType == 2) {
+          this.orderloading = localStorage.getItem("order_loading_zt");
+        }
       }
       if (this.orderloading == "支付成功") {
         // this.logisticsinfoif = true;
@@ -399,8 +406,9 @@
         let that = this;
 
         let data = {
-          orderCode: that.info.order_code
-        };
+          orderCode: this.$route.query.out_trade_no
+        }
+
         logisticsinfo(data)
           .then(function(res) {
             if (!!res && res.code == 20000) {
@@ -422,10 +430,10 @@
           });
       },
       getData() {
-        let data = {
-          order_code: this.info.order_code
-        };
         let that = this;
+        let data = {
+          order_code: this.$route.query.out_trade_no
+        }
         orderinfo(data)
           .then(function(res) {
             if (!!res && res.code == 20000) {
@@ -506,7 +514,7 @@
       },
       payovertimeFunc() {
         let data = {
-          order_code: this.info.order_code
+          order_code: this.$route.query.out_trade_no
         };
         let that = this;
         payovertime(data)
@@ -518,17 +526,17 @@
           .catch(function(error) {
             console.log(error);
           });
-          if (that.detailType == 1) {
-            localStorage.setItem("order_loading", that.orderloading);
-            localStorage.setItem("order_isload", 0);
-          } else {
-            localStorage.setItem("order_loading_zt", that.orderloading);
-            localStorage.setItem("order_isload_zt", 0);
-          }
+        if (that.detailType == 1) {
+          localStorage.setItem("order_loading", that.orderloading);
+          localStorage.setItem("order_isload", 0);
+        } else {
+          localStorage.setItem("order_loading_zt", that.orderloading);
+          localStorage.setItem("order_isload_zt", 0);
+        }
       },
       pollpay() {
         let data = {
-          order_code: this.info.order_code
+          order_code: this.$route.query.out_trade_no
         };
         let that = this;
         var n = 60 * 5,
@@ -972,19 +980,19 @@
       margin: 10px 0 0;
     }
 
-    .detailowner .el-icon-location-outline {
-      position: relative;
-      top: 30px;
-      left: 12px;
-      float: left;
-      font-size: 25px;
-    }
-
     .detailowner p {
       position: relative;
       left: 20px;
       text-align: left;
       margin: 0;
+    }
+
+    .detailowner .outlineO {
+      position: relative;
+      top: 30px;
+      left: 12px;
+      float: left;
+      font-size: 25px;
     }
 
     .detailowner_address span {
@@ -1075,8 +1083,13 @@
       font-size: 25px;
       display: inline-block;
       vertical-align: middle;
-      width: 32px;
+      width: 10%;
       text-align: center;
+    }
+
+    .areaImg .outlineT {
+      position: relative;
+      font-size: 25px;
     }
 
     .areaDetail {
@@ -1085,6 +1098,7 @@
       min-height: 53px;
       padding: 20px 0;
       line-height: 26px;
+      width: 88%;
     }
 
     .areaDetail div:first-child {
@@ -1099,7 +1113,7 @@
     }
 
     .emailS {
-      width: 220px;
+      // width: 210px;
       display: inline-block;
       word-break: break-all;
       vertical-align: top;

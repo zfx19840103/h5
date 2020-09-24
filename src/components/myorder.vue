@@ -361,7 +361,8 @@
         that.$router.push({
           name: "orderdetail",
           query: {
-            myorder: 1
+            myorder: 1,
+            out_trade_no: item.order_code
           }
         });
       },
