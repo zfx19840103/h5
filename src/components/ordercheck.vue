@@ -641,19 +641,19 @@ export default {
                         that.skuinfoparam.freight = _info.freight;
                         
                         if(that.skuinfoparam.actstock > 0) {
-                            that.stockshow = true;
-                            that.paysubmitdisabled = true;
-                            that.allshowhide = false;
+                            that.stockshow = true; //购买数量
+                            that.paysubmitdisabled = true; //去支付 true正常支付
+                            that.allshowhide = true; //钱数
                         }else if(that.skuinfoparam.actstock == 0){
                             // 库存为0的时候
                             if(that.$route.query.payloading == 1) {
-                                that.stockshow = true;
-                                that.paysubmitdisabled = false;
-                                that.allshowhide = false; 
+                                that.stockshow = false; 
+                                that.paysubmitdisabled = true; 
+                                that.allshowhide = true; 
                             }else {
                                 that.stockshow = false;
-                                that.paysubmitdisabled = false;
-                                that.allshowhide = true; //无法支付
+                                that.paysubmitdisabled = false; 
+                                that.allshowhide = false; 
                             }
                             
                         }
