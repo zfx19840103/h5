@@ -155,7 +155,7 @@
                 <span v-else>
                     合计：
                     <em>¥0</em>
-                    共1件
+                    共0件
                 </span>
                 <button @click="paysubmit" v-if="paysubmitdisabled" v-preventReClick>去支付</button>
                 <button v-else v-bind:class="{'paysubmitdisabled': !paysubmitdisabled}" disabled>去支付</button>
@@ -378,7 +378,6 @@ export default {
                     this.ordercreate.emailzt = _l_nom.emailzt;
                     this.ordercreate.stock = _l_nom.stock;
                     this.ordercreate.warehouseCode = _l_nom.warehouseCode;
-
 
                     if(this.ordercreate.stock>0) { //判断库存数量大于0的时候去支付按钮正常显示,库存显示
                         this.stockdisabled = true;
