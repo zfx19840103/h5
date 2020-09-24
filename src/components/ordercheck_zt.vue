@@ -667,6 +667,13 @@ export default {
                             : new Date().getTime() +
                               "" +
                               Math.floor(Math.random() * 4000 + 1000);
+                    
+                    let _warehouseCode;
+                    if(this.$route.query.onemore == 1) {
+                        _warehouseCode = JSON.parse(localStorage.getItem('onemoreobj_zt')).snapshoot_cnt.warehouseCode;
+                    }else {
+                        _warehouseCode = that.ordercreate.warehouseCode;
+                    }
                     let data = {
                         out_biz_code: _out_biz_code,
                         sku_list: [
@@ -683,7 +690,7 @@ export default {
                         },
                         orderdes: that.ordercreate.orderdes,
                         itemCode: that.skuinfoparam.itemCode,
-                        warehouseCode: that.ordercreate.warehouseCode,
+                        warehouseCode: _warehouseCode,
                         is_invoice: 0, //是否开发票	0否 1是
                         pathway: 2, //环境配置	1,2
                         usage_scenario: "bytemoon_self" //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换 bytemoon_self 自提
