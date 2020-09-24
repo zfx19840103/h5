@@ -374,7 +374,7 @@
         this.$router.push({
           name: "ordertrack",
           query: {
-            orderCode: localStorage.getItem('order_code_zt')
+            orderCode: that.info.order_code
           }
         });
       },
@@ -400,9 +400,17 @@
       logisticsinfoData() {
         let that = this;
 
-        let data = {
-          orderCode: localStorage.getItem('order_code_zt')
-        };
+        if (detailType == 1) {
+          let data = {
+            orderCode: that.info.order_code
+          };
+        }
+        if (detailType == 2) {
+          let data = {
+            orderCode: localStorage.getItem('order_code_zt')
+          };
+        }
+
         logisticsinfo(data)
           .then(function(res) {
             if (!!res && res.code == 20000) {
@@ -424,9 +432,16 @@
           });
       },
       getData() {
-        let data = {
-          order_code: localStorage.getItem('order_code_zt')
-        };
+        if (detailType == 1) {
+          let data = {
+            orderCode: that.info.order_code
+          };
+        }
+        if (detailType == 2) {
+          let data = {
+            orderCode: localStorage.getItem('order_code_zt')
+          };
+        }
         let that = this;
         orderinfo(data)
           .then(function(res) {
@@ -508,7 +523,7 @@
       },
       payovertimeFunc() {
         let data = {
-          order_code: localStorage.getItem('order_code_zt')
+          order_code: this.info.order_code
         };
         let that = this;
         payovertime(data)
@@ -530,7 +545,7 @@
       },
       pollpay() {
         let data = {
-          order_code: localStorage.getItem('order_code_zt')
+          order_code: this.info.order_code
         };
         let that = this;
         var n = 60 * 5,
