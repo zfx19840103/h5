@@ -117,6 +117,7 @@
             <button v-else v-bind:class="{'paysubmitdisabled': !paysubmitdisabled}" disabled>去支付</button>
         </div>
     </div>
+    <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
     </div>
 </template>
 
@@ -631,7 +632,6 @@ export default {
         paysubmit() {
             let that = this;
             let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]$/;
-
             if (that.ordercreate.area == "请选择工区") {
                 that.alertBox = {
                     tip: "请选择工区",
