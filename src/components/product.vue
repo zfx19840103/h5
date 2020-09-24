@@ -6,9 +6,10 @@
         <div class="productbtn" v-if="nowPayShow">
             <button class="emailpay" v-preventReClick v-if="!!actstock" @click="emailpayFunc">邮寄购买</button>
             <button class="emailpay noemailbtn" v-preventReClick v-else>邮寄购买</button>
-
+            <span v-if="!gqtraisingshowhide">
             <button class="gqtraising" v-preventReClick @click="gqtraisingFunc">工区自提</button>
-            <p>（自提购买后不支持取消订单）</p>
+            <p>{{gqtraisingfont}}</p>
+            </span>
         </div>
         <div class="login-wrap">
             <span class="orderCenter" @click="orderCenter"><i>订单中心</i></span>
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import { loginPost, pushCode, actstockapi } from "@/api/login";
+import { loginPost, pushCode, actstockapi, gqtraisingapi } from "@/api/login";
 
 import Cookie from "js-cookie";
 import * as CryptoJS from "crypto-js";
@@ -67,6 +68,8 @@ export default {
     data() {
         return {
             actstock: true,
+            gqtraisingshowhide: true,
+            gqtraisingfont: "",
             smartCaptcha: "",
             alertBoxVisible: false,
             alertBoxContent: "",
@@ -90,6 +93,7 @@ export default {
     },
     created() {
         this.actstockFunc();
+        this.gqtraisingshowhideFunc();
     },
     mounted() {
         this.pushCodeFunc();
@@ -102,6 +106,21 @@ export default {
                     if(!!res && res.code == 20000) {
 
                         that.actstock = !!res.data.info && res.data.info.actstock > 0 ? true : false;
+                    }else {
+                        console.log(res.message);
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+        gqtraisingshowhideFunc() {
+            let that = this;
+            gqtraisingapi()
+                .then(function(res) {
+                    if(!!res && res.code == 20000) {
+                        that.gqtraisingfont = res.data.word;
+                        that.gqtraisingshowhide = res.data.is_close;
                     }else {
                         console.log(res.message);
                     }
