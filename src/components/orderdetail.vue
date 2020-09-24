@@ -947,10 +947,14 @@
       font-style: normal;
       color: #333333;
       float: right;
+      height: 20px;
+      line-height: 20px;
     }
 
     .order p.total_price em {
       color: #ff502c;
+      height: 20px;
+      line-height: 20px;
     }
 
     .ordercenter span {
@@ -1306,6 +1310,8 @@
 
     .order p.total_price em {
       color: #ff502c;
+      height: 20px;
+      line-height: 20px;
     }
 
     .ordercenter span {
