@@ -686,7 +686,7 @@ export default {
                 };
             } else if (that.ordercreate.emailztfe != "") {
                 // if (!reg.test(that.ordercreate.emailztfe)) {
-                if (fal) {
+                if (false) {
                     that.alertBox = {
                         tip: "自取人邮箱格式不正确",
                         visible: true
