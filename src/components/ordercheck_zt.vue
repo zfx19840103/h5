@@ -728,6 +728,7 @@
 
 <style scoped lang="less">
   .ordercheckClass {
+    height: 100%;
 
     input[disabled],input:disabled,input.disabled{
         color: #696464;
@@ -855,6 +856,7 @@
     .payloading .topcontent .emailzt .emailztfe,
     .payloading .topcontent i,
     .payloading .topcontent em,
+    .payloading .emailztselect,
     .payloading .topcontent strong {
       color: #696464 !important;
     }
@@ -960,6 +962,7 @@
     .ms_content {
       font-size: 14px;
       background: #f4f4f4;
+      height: 100%;
     }
 
     .wxicon {
