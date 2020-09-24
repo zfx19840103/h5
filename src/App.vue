@@ -75,4 +75,7 @@ html, body {
     font-size: 16px;
     border: 0;
 }
+.payloading .el-input.is-disabled .el-input__inner{
+  color: #696464 !important;
+}
 </style>

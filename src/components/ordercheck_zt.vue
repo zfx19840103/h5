@@ -856,7 +856,6 @@
     .payloading .topcontent .emailzt .emailztfe,
     .payloading .topcontent i,
     .payloading .topcontent em,
-    .payloading .emailztselect,
     .payloading .topcontent strong {
       color: #696464 !important;
     }
