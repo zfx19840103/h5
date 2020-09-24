@@ -620,7 +620,7 @@
           };
         } else if (that.ordercreate.emailztfe == "") {
           that.alertBox = {
-            tip: "请选择自取人邮箱",
+            tip: "请输入自取人邮箱",
             visible: true
           };
         } else if (that.ordercreate.emailztfe != "") {
