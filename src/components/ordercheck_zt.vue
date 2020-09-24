@@ -6,7 +6,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span class="tiShi">请选择工区</span>
+            <span class="tiShi">{{ordercreate.area}}</span>
             <!-- <span>{{ordercreate.area}}</span> -->
             </div>
             <div class="emailzt">
@@ -34,8 +34,7 @@
             <strong>*</strong>
             <span>工区</span>
             <i class="el-icon-arrow-right"></i>
-            <span class="tiShi">请选择工区</span>
-            <!-- <span>{{ordercreate.area}}</span> -->
+            <span class="checkTiShi">{{ordercreate.area}}</span>
             </div>
             <div class="emailzt">
             <strong>*</strong>
@@ -237,7 +236,7 @@ export default {
                 },
                 is_invoice: 0, //默认不开发票
                 pathway: 2,
-                area: "工区选择",
+                area: "请选择工区",
                 emailztfe: "",
                 emailzt: "bytedance.com",
                 warehouseCode: "",
@@ -255,7 +254,7 @@ export default {
             numordersmethodobj: {
                 sku_count: 1, //数量
                 orderdes: "",
-                area: "工区选择",
+                area: "请选择工区",
                 pay_method: 2, //1，支付宝 2，微信
                 emailztfe: "", //邮箱地址前缀
                 emailzt: "bytedance.com", //邮箱地址后缀
@@ -877,6 +876,10 @@ export default {
       margin-right: 10px;
       color: #9B9B9B !important;
       font-size: 12px !important;
+    }
+    .checkTiShi{
+      float: right !important;
+      margin-right: 10px;
     }
 
 
