@@ -730,14 +730,14 @@
   .ordercheckClass {
 
     input[disabled],input:disabled,input.disabled{
-        color: #D8D8D8;
-        -webkit-text-fill-color:#D8D8D8;
+        color: #696464;
+        -webkit-text-fill-color:#696464;
         -webkit-opacity:1;
         opacity: 1;
     }
 
     select[disabled='disabled']::-ms-value {
-        color: #D8D8D8;
+        color: #696464;
     }
 
     .payTogo button.paysubmitdisabled {
@@ -856,7 +856,7 @@
     .payloading .topcontent i,
     .payloading .topcontent em,
     .payloading .topcontent strong {
-      color: #9b9b9b !important;
+      color: #696464 !important;
     }
 
     .payTipsc i {
