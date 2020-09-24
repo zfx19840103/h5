@@ -92,13 +92,13 @@
 
       // 选择工区
       areaselecr(item) {
-        if (item.stock == 0) {
+        if (item.actstock == 0) {
 
         } else {
           this.checkId = item.id
           var loca = JSON.parse(localStorage.getItem('numordersmethodobj_zt')) || {}
           loca.area = item.area
-          loca.stock = item.stock
+          loca.stock = item.actstock
           loca.id = item.id
           loca.warehouseCode = item.warehouseCode
           localStorage.setItem('numordersmethodobj_zt', JSON.stringify(loca))

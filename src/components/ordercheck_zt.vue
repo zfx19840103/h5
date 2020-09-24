@@ -4,14 +4,15 @@
       <div class="topcontent" v-if="!payloading">
         <div class="gqzt" @click="workarealink">
           <strong>*</strong>
-          <span>{{ordercreate.area}}</span>
+          <span>工区</span>
           <i class="el-icon-arrow-right"></i>
+          <span class="tiShi">请选择工区</span>
+          <!-- <span>{{ordercreate.area}}</span> -->
         </div>
         <div class="emailzt">
           <strong>*</strong>
+          <span>邮箱</span>
 
-          <input type="text" v-bind:class="{'textright': textright}" @input="emailztfeinput" maxlength="50" placeholder="自取人邮箱"
-            v-model="ordercreate.emailztfe" class="emailztfe" />
 
           <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
           <div class="emailztselectdiv">
@@ -21,18 +22,25 @@
             </el-select>
           </div>
           <em>@</em>
+          <input type="text" v-bind:class="{'textright': textright}" @input="emailztfeinput" maxlength="50" placeholder="请输入自取人邮箱"
+            v-model="ordercreate.emailztfe" class="emailztfe" />
         </div>
       </div>
       <div class="topcontent" v-else>
         <div class="gqzt">
-          <strong>*</strong>
+          <!-- <strong>*</strong>
           <span>{{ordercreate.area}}</span>
+          <i class="el-icon-arrow-right"></i> -->
+          <strong>*</strong>
+          <span>工区</span>
           <i class="el-icon-arrow-right"></i>
+          <span class="tiShi">请选择工区</span>
+          <!-- <span>{{ordercreate.area}}</span> -->
         </div>
         <div class="emailzt">
           <strong>*</strong>
-
-          <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe" />
+          <span>邮箱</span>
+          <!-- <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe" /> -->
 
           <i class="el-icon-arrow-right" v-bind:class="{ 'emailztarrow': emailztarrow }"></i>
           <div class="emailztselectdiv">
@@ -41,6 +49,7 @@
             </el-select>
           </div>
           <em>@</em>
+          <input type="text" disabled maxlength="50" placeholder="自取人邮箱" v-model="ordercreate.emailztfe" class="emailztfe" />
         </div>
       </div>
       <div class="order">
@@ -754,7 +763,7 @@
     }
 
     .emailztfe {
-      float: left;
+      float: right;
       margin: 15px 0 0 0;
       font-size: 14px;
       font-family: PingFangSC-Regular, PingFang SC;
@@ -765,6 +774,13 @@
       height: 26px;
       line-height: 26px;
       outline: 0;
+      text-align: right;
+      font-size: 12px;
+      width: 1.2rem;
+    }
+
+    input::-webkit-input-placeholder{
+        color:#9B9B9B !important;
     }
 
     .emailzt em {
@@ -831,6 +847,19 @@
       font-weight: 400;
       color: #333333;
     }
+
+    .tiShi{
+      float: right !important;
+      margin-right: 10px;
+      color: #9B9B9B !important;
+      font-size: 12px !important;
+    }
+
+
+
+
+
+
 
     .topcontent .gqzt strong,
     .topcontent .emailzt strong {
