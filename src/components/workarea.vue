@@ -42,7 +42,7 @@
       getList() {
         let that = this;
         stockList({
-            itemCode: 'MA000016'
+            itemCode: this.$route.query.itemCode,
           }).then(function(res) {
 
             if (!!res && res.code == 20000) {
