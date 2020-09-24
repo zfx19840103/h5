@@ -9,7 +9,7 @@
       <div class="cancel" @click="cancalFun">取消</div>
     </div>
     <div class="areaBox">
-      <div v-for="item in areaData" @click="areaselecr(item)" :class="item.stock == 0? 'noneStock' : 'areaItem'">
+      <div v-for="item in areaData" @click="areaselecr(item)" :class="item.actstock == 0? 'noneStock' : 'areaItem'">
         <span>{{ item.area }}</span>
         <span>(库存{{ item.actstock }})</span>
         <span class="checkItem" v-if="checkId == item.id"><i class="el-icon-check"></i></span>
