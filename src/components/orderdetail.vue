@@ -401,7 +401,7 @@
         let that = this;
 
         let data = {
-          order_code: this.$route.query.out_trade_no
+          orderCode: this.$route.query.out_trade_no
         }
 
         logisticsinfo(data)
@@ -427,7 +427,7 @@
       getData() {
         let that = this;
         let data = {
-          order_code: this.$route.query.out_trade_no
+          orderCode: this.$route.query.out_trade_no
         }
         orderinfo(data)
           .then(function(res) {
@@ -509,7 +509,7 @@
       },
       payovertimeFunc() {
         let data = {
-          order_code: this.info.order_code
+          order_code: this.$route.query.out_trade_no
         };
         let that = this;
         payovertime(data)
@@ -531,7 +531,7 @@
       },
       pollpay() {
         let data = {
-          order_code: this.info.order_code
+          order_code: this.$route.query.out_trade_no
         };
         let that = this;
         var n = 60 * 5,
