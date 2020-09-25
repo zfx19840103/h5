@@ -79,7 +79,7 @@ export default {
             payNow: "136",
             loginShow: false,
             nowPayShow: true,
-            feishuhref: 'https://tsingapi.tsingglobal.com/openapi/auth/login/feishu',
+            feishuhref: 'https://apitest.tsingglobal.com/openapi/auth/login/feishu',
             param: {
                 email: "",
                 vcCode: "",
@@ -205,7 +205,7 @@ export default {
             let that = this;
             // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
             let reg = /^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@((tsingglobal)|(bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
-            
+
             if (this.param.email !== "") {
                 if(!reg.test(this.param.email)) {
                     that.alertBoxVisible = true;
@@ -296,7 +296,7 @@ export default {
                 this.routerurl = 'myorder';
             }
         },
-        
+
     }
 };
 </script>

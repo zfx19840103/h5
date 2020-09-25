@@ -81,7 +81,7 @@ export default {
             vcCodepostfontcontent: "发送验证",
             verifydata: {},
             feishuhref:
-                "https://tsingapi.tsingglobal.com/openapi/auth/login/feishu",
+                "https://apitest.tsingglobal.com/openapi/auth/login/feishu",
             param: {
                 email: "",
                 vcCode: "",
@@ -559,7 +559,7 @@ div.captchaClass {
     background-image: url(../assets/img/loginBg.jpg);
     background-color: #3267c7;
     background-repeat: no-repeat;
-    background-position: 0 0; 
+    background-position: 0 0;
     background-size: auto 100%;
 }
 .login-wrap {
