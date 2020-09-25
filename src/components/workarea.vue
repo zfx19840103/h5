@@ -76,17 +76,18 @@
             this.$router.push({
               name: "ordercheck_zt",
               query: {
-                onemore: 1
+                onemore: 1,
+                selfType: 1
               }
             });
         } else {
           this.$router.push({
-            name: "ordercheck_zt"
-
+            name: "ordercheck_zt",
+            query: {
+              selfType: 1
+            }
           })
-          // query: {
-          //   orderedit: 1
-          // }
+          
         }
       },
 

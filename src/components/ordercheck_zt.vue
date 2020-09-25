@@ -355,6 +355,8 @@ export default {
                 this.textright = true;
             }
 
+
+
             this.$router.push({
                 query: merge(this.$route.query, {
                     orderedit: 1
@@ -675,7 +677,7 @@ export default {
 
                     let _warehouseCode;
                     if(this.$route.query.onemore == 1) {
-                      if (this.$route.query.orderedit == 1) {
+                      if (this.$route.query.selfType == 1) {
                         _warehouseCode = JSON.parse(localStorage.getItem('numordersmethodobj_zt')).warehouseCode;
                       } else {
                         _warehouseCode = JSON.parse(localStorage.getItem('onemoreobj_zt')).snapshoot_cnt.warehouseCode;
