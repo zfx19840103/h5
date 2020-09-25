@@ -1228,11 +1228,12 @@ export default {
     }
 
     .timeTiShi {
-        height: 52px;
-        line-height: 52px;
-        color: #ff4f5d;
-        padding: 0 10px;
-        text-align: left;
+      height: 24px;
+      line-height: 24px;
+      color: #ff4f5d;
+      padding: 0 10px;
+      text-align: left;
+      margin: 5px 0;
     }
 
     .ordernews {
