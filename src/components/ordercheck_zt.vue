@@ -402,7 +402,7 @@ export default {
 
             if (!!_l_nom) {
                 if (!_onemore || this.$route.query.orderedit == 1) {
-                    
+
                     this.ordercreate.orderdes = _l_nom.orderdes;
                     this.ordercreate.pay_method = _l_nom.pay_method;
                     this.ordercreate.area = _l_nom.area;
@@ -675,9 +675,11 @@ export default {
 
                     let _warehouseCode;
                     if(this.$route.query.onemore == 1) {
-                        _warehouseCode = JSON.parse(localStorage.getItem('onemoreobj_zt')).snapshoot_cnt.warehouseCode;
+                        // _warehouseCode = JSON.parse(localStorage.getItem('onemoreobj_zt')).snapshoot_cnt.warehouseCode;
+                        _warehouseCode = JSON.parse(localStorage.getItem('numordersmethodobj_zt')).warehouseCode;
                     }else {
-                        _warehouseCode = that.ordercreate.warehouseCode;
+                        // _warehouseCode = that.ordercreate.warehouseCode;
+                        _warehouseCode = JSON.parse(localStorage.getItem('numordersmethodobj_zt')).warehouseCode;
                     }
                     let data = {
                         out_biz_code: _out_biz_code,
