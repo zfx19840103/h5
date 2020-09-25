@@ -187,7 +187,8 @@
                 </p>
             </div>
 
-            <div class="timeTiShi">0-12点自提订单，14点30自提</div>
+            <div class="timeTiShi">*当日16:00前下单,可在当日17:00-19:00自提</div>
+            <div class="timeTiShi">*当日16:00后下单,可在次日12:00-19:00自提</div>
             <div class="ordernews">
                 <h3>订单信息：</h3>
                 <p>
@@ -1227,12 +1228,13 @@ export default {
     }
 
     .timeTiShi {
-        height: 52px;
-        line-height: 52px;
-        color: #ff4f5d;
-        padding: 0 10px;
-        text-align: left;
-        font-weight: 600;
+      height: 20px;
+      line-height: 20px;
+      color: #ff4f5d;
+      padding: 0 10px;
+      text-align: left;
+      margin: 3px 0;
+      font-size: 12px;
     }
 
     .ordernews {
