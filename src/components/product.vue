@@ -79,7 +79,7 @@ export default {
             payNow: "136",
             loginShow: false,
             nowPayShow: true,
-            feishuhref: 'https://apitest.tsingglobal.com/openapi/auth/login/feishu',
+            feishuhref: 'https://tsingapi.tsingglobal.com/openapi/auth/login/feishu',
             param: {
                 email: "",
                 vcCode: "",

@@ -81,7 +81,7 @@ export default {
             vcCodepostfontcontent: "发送验证",
             verifydata: {},
             feishuhref:
-                "https://apitest.tsingglobal.com/openapi/auth/login/feishu",
+                "https://tsingapi.tsingglobal.com/openapi/auth/login/feishu",
             param: {
                 email: "",
                 vcCode: "",
