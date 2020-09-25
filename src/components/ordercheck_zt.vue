@@ -675,11 +675,14 @@ export default {
 
                     let _warehouseCode;
                     if(this.$route.query.onemore == 1) {
-                        // _warehouseCode = JSON.parse(localStorage.getItem('onemoreobj_zt')).snapshoot_cnt.warehouseCode;
+                      if (this.$route.query.orderedit == 1) {
                         _warehouseCode = JSON.parse(localStorage.getItem('numordersmethodobj_zt')).warehouseCode;
+                      } else {
+                        _warehouseCode = JSON.parse(localStorage.getItem('onemoreobj_zt')).snapshoot_cnt.warehouseCode;
+                      }
                     }else {
-                        // _warehouseCode = that.ordercreate.warehouseCode;
-                        _warehouseCode = JSON.parse(localStorage.getItem('numordersmethodobj_zt')).warehouseCode;
+                        _warehouseCode = that.ordercreate.warehouseCode;
+                        // _warehouseCode = JSON.parse(localStorage.getItem('numordersmethodobj_zt')).warehouseCode;
                     }
                     let data = {
                         out_biz_code: _out_biz_code,
